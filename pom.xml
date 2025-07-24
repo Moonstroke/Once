@@ -5,4 +5,9 @@
 	<version>0.1-SNAPSHOT</version>
 	<name>Once</name>
 	<description>A simple container for fields to set only once</description>
+
+	<properties>
+		<maven.compiler.release>11</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 </project>
