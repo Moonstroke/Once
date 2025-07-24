@@ -1,1 +1,6 @@
 target/
+
+# Eclipse files; ignored because the POM already defines everything necessary
+.project
+.classpath
+.settings/
