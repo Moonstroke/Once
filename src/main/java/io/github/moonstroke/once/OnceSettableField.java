@@ -6,6 +6,18 @@ package io.github.moonstroke.once;
 public class OnceSettableField<T> {
 
 	/**
+	 * Create a field of given name that can only be set once.
+	 *
+	 * @param name The name of the field
+	 *
+	 * @throws NullPointerException     if name is {@code null}
+	 * @throws IllegalArgumentException if name is empty
+	 */
+	public OnceSettableField(String name) {
+		throw new UnsupportedOperationException("Not implemented"); // TODO
+	}
+
+	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
 	 * @param value The value to set
