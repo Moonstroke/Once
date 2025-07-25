@@ -1,5 +1,7 @@
 package io.github.moonstroke.once;
 
+import java.util.function.Predicate;
+
 /**
  * An additional requirement that the field value must meet when it is being set.
  *
@@ -16,4 +18,19 @@ public interface Requirement<T> {
 	 * @throws IllegalArgumentException if the value does not meet the requirement
 	 */
 	void check(T value) throws IllegalArgumentException;
+
+
+	/**
+	 * Wrap a boolean predicate into a requirement instance.
+	 *
+	 * @param <U>       The type of the value checked
+	 * @param predicate The boolean predicate to wrap
+	 *
+	 * @return A requirement instance performing the check represented by the given predicate
+	 *
+	 * @throws NullPointerException if predicate is {@code null}
+	 */
+	public static <U> Requirement<U> fromPredicate(Predicate<U> predicate) {
+		throw new UnsupportedOperationException("Not implemented"); // TODO
+	}
 }
