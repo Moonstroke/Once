@@ -80,9 +80,21 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
+	void testRequirementsStringNotEmptyAcceptsNonEmptyString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set("not empty"));
+	}
+
+	@Test
 	void testRequirementsStringNotBlankRejectsBlankString() {
 		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_BLANK);
 		assertThrows(IllegalArgumentException.class, () -> once.set(" \t\n\f\r"));
+	}
+
+	@Test
+	void testRequirementsStringNotBlankAcceptsNonBlankString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_BLANK);
+		assertDoesNotThrow(() -> once.set("not blank"));
 	}
 
 	@Test
@@ -92,9 +104,21 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
+	void testRequirementsListNotEmptyAcceptsNonEmptyList() {
+		OnceSettableField<List<?>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set(Collections.singletonList(new Object())));
+	}
+
+	@Test
 	void testRequirementsSetNotEmptyRejectsEmptySet() {
 		OnceSettableField<Set<?>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
+	}
+
+	@Test
+	void testRequirementsSetNotEmptyAcceptsNonEmptySet() {
+		OnceSettableField<Set<?>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set(Collections.singleton(new Object())));
 	}
 
 	@Test
@@ -104,14 +128,32 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
+	void testRequirementsCollectionNotEmptyAcceptsNonEmptyList() {
+		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set(Collections.singletonList(new Object())));
+	}
+
+	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
 		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
 	}
 
 	@Test
+	void testRequirementsCollectionNotEmptyAcceptsNonEmptySet() {
+		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set(Collections.singleton(new Object())));
+	}
+
+	@Test
 	void testRequirementsMapNotEmptyRejectsEmptyMap() {
 		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyMap()));
+	}
+
+	@Test
+	void testRequirementsMapNotEmptyAcceptsNonEmptyMap() {
+		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
+		assertDoesNotThrow(() -> once.set(Collections.singletonMap(new Object(), new Object())));
 	}
 }
