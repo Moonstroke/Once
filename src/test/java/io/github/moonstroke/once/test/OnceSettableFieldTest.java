@@ -12,24 +12,24 @@ class OnceSettableFieldTest {
 
 	@Test
 	void testConstructorCallNullNameFails() {
-		assertThrows(NullPointerException.class, () -> new OnceSettableField<Object>(null));
+		assertThrows(NullPointerException.class, () -> new OnceSettableField<>(null));
 	}
 
 	@Test
 	void testConstructorCallEmptyNameFails() {
-		assertThrows(IllegalArgumentException.class, () -> new OnceSettableField<Object>(""));
+		assertThrows(IllegalArgumentException.class, () -> new OnceSettableField<>(""));
 	}
 
 	@Test
 	void testFirstCallToSetDoesNotFail() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		assertDoesNotThrow(() -> once.set(value));
 	}
 
 	@Test
 	void testSecondCallToSetFails() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
 		assertThrows(IllegalStateException.class, () -> once.set(value));
@@ -37,19 +37,19 @@ class OnceSettableFieldTest {
 
 	@Test
 	void testCallToSetNullFails() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.set(null));
 	}
 
 	@Test
 	void testCallToGetWithoutSetFails() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(IllegalStateException.class, () -> once.get());
 	}
 
 	@Test
 	void testCallToGetAfterSetDoesNotFail() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
 		assertDoesNotThrow(() -> once.get());
@@ -57,7 +57,7 @@ class OnceSettableFieldTest {
 
 	@Test
 	void testGetReturnsValuePassedToSet() {
-		OnceSettableField<Object> once = new OnceSettableField<Object>("field");
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
 		assertEquals(value, once.get());
