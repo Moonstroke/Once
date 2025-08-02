@@ -51,4 +51,16 @@ public class Requirements {
 	public static final Requirement<Map<?,
 	                                    ?>> MAP_NOT_EMPTY = Requirement.fromPredicate(map -> !map.isEmpty(),
 	                                                                                  "value cannot be an empty map");
+
+	/**
+	 * Require that a character be nonzero.
+	 */
+	public static final Requirement<Character> CHAR_NOT_ZERO = Requirement.fromPredicate(c -> c != '\0',
+	                                                                                     "value cannot be zero");
+
+	/**
+	 * Require that a number be nonzero.
+	 */
+	public static final Requirement<Number> NOT_ZERO = Requirement.fromPredicate(n -> n.doubleValue() != 0D,
+	                                                                             "value cannot be zero");
 }

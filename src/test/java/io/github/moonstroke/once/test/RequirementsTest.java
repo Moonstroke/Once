@@ -99,4 +99,40 @@ class RequirementsTest {
 		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singletonMap(new Object(), new Object())));
 	}
+
+	@Test
+	void testRequirementsCharNotZeroRejectsZeroChar() {
+		OnceSettableField<Character> once = new OnceSettableField<>("field", Requirements.CHAR_NOT_ZERO);
+		assertThrows(IllegalArgumentException.class, () -> once.set('\0'));
+	}
+
+	@Test
+	void testRequirementsCharNotZeroAcceptsNonZeroChar() {
+		OnceSettableField<Character> once = new OnceSettableField<>("field", Requirements.CHAR_NOT_ZERO);
+		assertDoesNotThrow(() -> once.set('*'));
+	}
+
+	@Test
+	void testRequirementsNotZeroRejectsZeroInt() {
+		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		assertThrows(IllegalArgumentException.class, () -> once.set(0));
+	}
+
+	@Test
+	void testRequirementsNotZeroRejectsZeroDouble() {
+		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		assertThrows(IllegalArgumentException.class, () -> once.set(0D));
+	}
+
+	@Test
+	void testRequirementsNotZeroAcceptsNonZeroInt() {
+		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		assertDoesNotThrow(() -> once.set(42));
+	}
+
+	@Test
+	void testRequirementsNotZeroAcceptsNonZeroDouble() {
+		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		assertDoesNotThrow(() -> once.set(42D));
+	}
 }
