@@ -8,12 +8,13 @@ public class OnceSettableField<T> {
 	/**
 	 * Create a field of given name that can only be set once.
 	 *
-	 * @param name The name of the field
+	 * @param name         The name of the field
+	 * @param requirements The requirements that the value must meet before being set
 	 *
-	 * @throws NullPointerException     if name is {@code null}
+	 * @throws NullPointerException     if any parameter is {@code null}
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public OnceSettableField(String name) {
+	public OnceSettableField(String name, Requirement<T>... requirements) {
 		throw new UnsupportedOperationException("Not implemented"); // TODO
 	}
 
