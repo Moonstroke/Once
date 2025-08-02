@@ -2,6 +2,7 @@ package io.github.moonstroke.once;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,4 +44,11 @@ public class Requirements {
 	 */
 	public static final Requirement<Collection<?>> COLLECTION_NOT_EMPTY = Requirement.fromPredicate(coll -> !coll.isEmpty(),
 	                                                                                                "value cannot be an empty collection");
+
+	/**
+	 * Require that a map be not empty.
+	 */
+	public static final Requirement<Map<?,
+	                                    ?>> MAP_NOT_EMPTY = Requirement.fromPredicate(map -> !map.isEmpty(),
+	                                                                                  "value cannot be an empty map");
 }
