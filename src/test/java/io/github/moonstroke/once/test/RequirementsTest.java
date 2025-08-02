@@ -135,4 +135,52 @@ class RequirementsTest {
 		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
 		assertDoesNotThrow(() -> once.set(42D));
 	}
+
+	@Test
+	void testRequirementsFloatNotNanRejectsFloatNan() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_NOT_NAN);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Float.NaN));
+	}
+
+	@Test
+	void testRequirementsFloatFiniteRejectsNegInf() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_FINITE);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Float.NEGATIVE_INFINITY));
+	}
+
+	@Test
+	void testRequirementsFloatFiniteRejectsPosInf() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_FINITE);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Float.POSITIVE_INFINITY));
+	}
+
+	@Test
+	void testRequirementsFloatNotNanFiniteAcceptRegularFloat() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_NOT_NAN, Requirements.FLOAT_FINITE);
+		assertDoesNotThrow(() -> once.set(42F));
+	}
+
+	@Test
+	void testRequirementsDoubleNotNanRejectsDoubleNan() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_NOT_NAN);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Double.NaN));
+	}
+
+	@Test
+	void testRequirementsDoubleFiniteRejectsNegInf() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_FINITE);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Double.NEGATIVE_INFINITY));
+	}
+
+	@Test
+	void testRequirementsDoubleFiniteRejectsPosInf() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_FINITE);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Double.POSITIVE_INFINITY));
+	}
+
+	@Test
+	void testRequirementsDoubleNotNanFiniteAcceptRegularDouble() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_NOT_NAN, Requirements.DOUBLE_FINITE);
+		assertDoesNotThrow(() -> once.set(42D));
+	}
 }

@@ -63,4 +63,28 @@ public class Requirements {
 	 */
 	public static final Requirement<Number> NOT_ZERO = Requirement.fromPredicate(n -> n.doubleValue() != 0D,
 	                                                                             "value cannot be zero");
+
+	/**
+	 * Require that a floating-point number be an actual number (not NaN).
+	 */
+	public static final Requirement<Float> FLOAT_NOT_NAN = Requirement.fromPredicate(f -> !Float.isNaN(f),
+	                                                                                 "value cannot be NaN");
+
+	/**
+	 * Require that a double-precision floating-point number be an actual number (not NaN).
+	 */
+	public static final Requirement<Double> DOUBLE_NOT_NAN = Requirement.fromPredicate(d -> !Double.isNaN(d),
+	                                                                                   "value cannot be NaN");
+
+	/**
+	 * Require that a floating-point number be a finite number.
+	 */
+	public static final Requirement<Float> FLOAT_FINITE = Requirement.fromPredicate(Float::isFinite,
+	                                                                                "value must not be an infinite");
+
+	/**
+	 * Require that a double-precision floating-point number be a finite number.
+	 */
+	public static final Requirement<Double> DOUBLE_FINITE = Requirement.fromPredicate(Double::isFinite,
+	                                                                                  "value must not be an infinite");
 }
