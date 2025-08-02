@@ -14,6 +14,7 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException     if any parameter is {@code null}
 	 * @throws IllegalArgumentException if name is empty
 	 */
+	@SafeVarargs
 	public OnceSettableField(String name, Requirement<T>... requirements) {
 		throw new UnsupportedOperationException("Not implemented"); // TODO
 	}
