@@ -4,9 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import io.github.moonstroke.once.OnceSettableField;
+import io.github.moonstroke.once.Requirements;
 
 class OnceSettableFieldTest {
 
@@ -61,5 +68,50 @@ class OnceSettableFieldTest {
 		Object value = new Object();
 		once.set(value);
 		assertEquals(value, once.get());
+	}
+
+
+	/* Requirements */
+
+	@Test
+	void testRequirementsStringNotEmptyRejectsEmptyString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(""));
+	}
+
+	@Test
+	void testRequirementsStringNotBlankRejectsBlankString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_BLANK);
+		assertThrows(IllegalArgumentException.class, () -> once.set(" \t\n\f\r"));
+	}
+
+	@Test
+	void testRequirementsListNotEmptyRejectsEmptyList() {
+		OnceSettableField<List<?>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyList()));
+	}
+
+	@Test
+	void testRequirementsSetNotEmptyRejectsEmptySet() {
+		OnceSettableField<Set<?>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
+	}
+
+	@Test
+	void testRequirementsCollectionNotEmptyRejectsEmptyList() {
+		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyList()));
+	}
+
+	@Test
+	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
+		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
+	}
+
+	@Test
+	void testRequirementsMapNotEmptyRejectsEmptyMap() {
+		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
+		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyMap()));
 	}
 }
