@@ -18,6 +18,12 @@ public class OnceSettableField<T> {
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	public OnceSettableField(String name) {
+		if (name == null) {
+			throw new NullPointerException("Cannot have a null name");
+		}
+		if (name.isEmpty()) {
+			throw new IllegalArgumentException("Cannot have an empty name");
+		}
 		this.name = name;
 	}
 
