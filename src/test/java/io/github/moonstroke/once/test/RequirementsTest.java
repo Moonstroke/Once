@@ -18,6 +18,12 @@ import io.github.moonstroke.once.Requirements;
 class RequirementsTest {
 
 	@Test
+	void testRequirementsAllowNullAcceptsNullObject() {
+		OnceSettableField<Object> once = new OnceSettableField<>("optional field", Requirements.ALLOW_NULL);
+		assertDoesNotThrow(() -> once.set(null));
+	}
+
+	@Test
 	void testRequirementsStringNotEmptyRejectsEmptyString() {
 		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(""));
