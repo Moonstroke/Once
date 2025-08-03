@@ -225,4 +225,184 @@ class RequirementsTest {
 		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.POSITIVE);
 		assertDoesNotThrow(() -> once.set(42.5D));
 	}
+
+	@Test
+	void testRequirementsInRangeByteRejectsByteBelowRange() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
+		assertDoesNotThrow(() -> once.set((byte) 0));
+	}
+
+	@Test
+	void testRequirementsInRangeByteAcceptsByteRangeMin() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
+		assertDoesNotThrow(() -> once.set((byte) 1));
+	}
+
+	@Test
+	void testRequirementsInRangeByteAcceptsByteInRange() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
+		assertDoesNotThrow(() -> once.set((byte) 3));
+	}
+
+	@Test
+	void testRequirementsInRangeByteAcceptsByteRangeMax() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
+		assertDoesNotThrow(() -> once.set((byte) 5));
+	}
+
+	@Test
+	void testRequirementsInRangeByteRejectsByteAboveRange() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
+		assertDoesNotThrow(() -> once.set((byte) 7));
+	}
+
+	@Test
+	void testRequirementsInRangeShortRejectsShortBelowRange() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.inRange((short) 1, (short) 5));
+		assertDoesNotThrow(() -> once.set((short) 0));
+	}
+
+	@Test
+	void testRequirementsInRangeShortAcceptsShortRangeMin() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.inRange((short) 1, (short) 5));
+		assertDoesNotThrow(() -> once.set((short) 1));
+	}
+
+	@Test
+	void testRequirementsInRangeShortAcceptsShortInRange() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.inRange((short) 1, (short) 5));
+		assertDoesNotThrow(() -> once.set((short) 3));
+	}
+
+	@Test
+	void testRequirementsInRangeShortAcceptsShortRangeMax() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.inRange((short) 1, (short) 5));
+		assertDoesNotThrow(() -> once.set((short) 5));
+	}
+
+	@Test
+	void testRequirementsInRangeShortRejectsShortAboveRange() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.inRange((short) 1, (short) 5));
+		assertDoesNotThrow(() -> once.set((short) 7));
+	}
+
+	@Test
+	void testRequirementsInRangeIntRejectsIntBelowRange() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
+		assertDoesNotThrow(() -> once.set(0));
+	}
+
+	@Test
+	void testRequirementsInRangeIntAcceptsIntRangeMin() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
+		assertDoesNotThrow(() -> once.set(1));
+	}
+
+	@Test
+	void testRequirementsInRangeIntAcceptsIntInRange() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
+		assertDoesNotThrow(() -> once.set(3));
+	}
+
+	@Test
+	void testRequirementsInRangeIntAcceptsIntRangeMax() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
+		assertDoesNotThrow(() -> once.set(5));
+	}
+
+	@Test
+	void testRequirementsInRangeIntRejectsIntAboveRange() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
+		assertDoesNotThrow(() -> once.set(7));
+	}
+
+	@Test
+	void testRequirementsInRangeLongRejectsLongBelowRange() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.inRange(1L, 5L));
+		assertDoesNotThrow(() -> once.set(0L));
+	}
+
+	@Test
+	void testRequirementsInRangeLongAcceptsLongRangeMin() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.inRange(1L, 5L));
+		assertDoesNotThrow(() -> once.set(1L));
+	}
+
+	@Test
+	void testRequirementsInRangeLongAcceptsLongInRange() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.inRange(1L, 5L));
+		assertDoesNotThrow(() -> once.set(3L));
+	}
+
+	@Test
+	void testRequirementsInRangeLongAcceptsLongRangeMax() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.inRange(1L, 5L));
+		assertDoesNotThrow(() -> once.set(5L));
+	}
+
+	@Test
+	void testRequirementsInRangeLongRejectsLongAboveRange() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.inRange(1L, 5L));
+		assertDoesNotThrow(() -> once.set(7L));
+	}
+
+	@Test
+	void testRequirementsInRangeFloatRejectsFloatBelowRange() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
+		assertDoesNotThrow(() -> once.set(1F));
+	}
+
+	@Test
+	void testRequirementsInRangeFloatAcceptsFloatRangeMin() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
+		assertDoesNotThrow(() -> once.set(1.25F));
+	}
+
+	@Test
+	void testRequirementsInRangeFloatAcceptsFloatInRange() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
+		assertDoesNotThrow(() -> once.set(1.5F));
+	}
+
+	@Test
+	void testRequirementsInRangeFloatAcceptsFloatRangeMax() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
+		assertDoesNotThrow(() -> once.set(1.75F));
+	}
+
+	@Test
+	void testRequirementsInRangeFloatRejectsFloatAboveRange() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
+		assertDoesNotThrow(() -> once.set(2F));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleRejectsDoubleBelowRange() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.inRange(1.25, 1.75));
+		assertDoesNotThrow(() -> once.set(1D));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleAcceptsDoubleRangeMin() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.inRange(1.25, 1.75));
+		assertDoesNotThrow(() -> once.set(1.25));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleAcceptsDoubleInRange() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.inRange(1.25, 1.75));
+		assertDoesNotThrow(() -> once.set(1.5));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleAcceptsDoubleRangeMax() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.inRange(1.25, 1.75));
+		assertDoesNotThrow(() -> once.set(1.75));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleRejectsDoubleAboveRange() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.inRange(1.25, 1.75));
+		assertDoesNotThrow(() -> once.set(2D));
+	}
 }
