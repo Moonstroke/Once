@@ -93,4 +93,11 @@ public class Requirements {
 	 */
 	public static final Requirement<Number> NOT_NEGATIVE = Requirement.fromPredicate(n -> n.doubleValue() >= 0,
 	                                                                                 "value must not be negative");
+
+	/**
+	 * Require that a number be positive (not negative, nor zero). This requirement is a shortcut for specifying both
+	 * {@link #NOT_NEGATIVE} and {@link #NOT_ZERO}.
+	 */
+	public static final Requirement<Number> POSITIVE = Requirement.fromPredicate(n -> n.doubleValue() > 0,
+	                                                                             "value must be positive");
 }
