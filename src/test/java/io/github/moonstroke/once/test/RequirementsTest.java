@@ -42,61 +42,65 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsListNotEmptyRejectsEmptyList() {
-		OnceSettableField<List<?>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
+		OnceSettableField<List<Object>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyList()));
 	}
 
 	@Test
 	void testRequirementsListNotEmptyAcceptsNonEmptyList() {
-		OnceSettableField<List<?>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
+		OnceSettableField<List<Object>> once = new OnceSettableField<>("field", Requirements.LIST_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singletonList(new Object())));
 	}
 
 	@Test
 	void testRequirementsSetNotEmptyRejectsEmptySet() {
-		OnceSettableField<Set<?>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
+		OnceSettableField<Set<Object>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
 	}
 
 	@Test
 	void testRequirementsSetNotEmptyAcceptsNonEmptySet() {
-		OnceSettableField<Set<?>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
+		OnceSettableField<Set<Object>> once = new OnceSettableField<>("field", Requirements.SET_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singleton(new Object())));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptyList() {
-		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		OnceSettableField<Collection<Object>> once = new OnceSettableField<>("field",
+		                                                                     Requirements.COLLECTION_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyList()));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyAcceptsNonEmptyList() {
-		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		OnceSettableField<Collection<Object>> once = new OnceSettableField<>("field",
+		                                                                     Requirements.COLLECTION_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singletonList(new Object())));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
-		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		OnceSettableField<Collection<Object>> once = new OnceSettableField<>("field",
+		                                                                     Requirements.COLLECTION_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptySet()));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyAcceptsNonEmptySet() {
-		OnceSettableField<Collection<?>> once = new OnceSettableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
+		OnceSettableField<Collection<Object>> once = new OnceSettableField<>("field",
+		                                                                     Requirements.COLLECTION_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singleton(new Object())));
 	}
 
 	@Test
 	void testRequirementsMapNotEmptyRejectsEmptyMap() {
-		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
+		OnceSettableField<Map<Object, Object>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> once.set(Collections.emptyMap()));
 	}
 
 	@Test
 	void testRequirementsMapNotEmptyAcceptsNonEmptyMap() {
-		OnceSettableField<Map<?, ?>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
+		OnceSettableField<Map<Object, Object>> once = new OnceSettableField<>("field", Requirements.MAP_NOT_EMPTY);
 		assertDoesNotThrow(() -> once.set(Collections.singletonMap(new Object(), new Object())));
 	}
 
@@ -114,25 +118,25 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsNotZeroRejectsZeroInt() {
-		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
 		assertThrows(IllegalArgumentException.class, () -> once.set(0));
 	}
 
 	@Test
 	void testRequirementsNotZeroRejectsZeroDouble() {
-		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
 		assertThrows(IllegalArgumentException.class, () -> once.set(0D));
 	}
 
 	@Test
 	void testRequirementsNotZeroAcceptsNonZeroInt() {
-		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
 		assertDoesNotThrow(() -> once.set(42));
 	}
 
 	@Test
 	void testRequirementsNotZeroAcceptsNonZeroDouble() {
-		OnceSettableField<Number> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.NOT_ZERO);
 		assertDoesNotThrow(() -> once.set(42D));
 	}
 
@@ -156,7 +160,8 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsFloatNotNanFiniteAcceptRegularFloat() {
-		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_NOT_NAN, Requirements.FLOAT_FINITE);
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.FLOAT_NOT_NAN,
+		                                                        Requirements.FLOAT_FINITE);
 		assertDoesNotThrow(() -> once.set(42F));
 	}
 
@@ -180,7 +185,8 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsDoubleNotNanFiniteAcceptRegularDouble() {
-		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_NOT_NAN, Requirements.DOUBLE_FINITE);
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.DOUBLE_NOT_NAN,
+		                                                         Requirements.DOUBLE_FINITE);
 		assertDoesNotThrow(() -> once.set(42D));
 	}
 }
