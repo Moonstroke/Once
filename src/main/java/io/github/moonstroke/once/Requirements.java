@@ -3,7 +3,10 @@ package io.github.moonstroke.once;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Defines a set of common requirements, for various types.
@@ -26,6 +29,37 @@ public class Requirements {
 	 */
 	public static final Requirement<String> STRING_NOT_BLANK = Requirement.fromPredicate(str -> !str.isBlank(),
 	                                                                                     "value cannot be a blank string");
+
+
+	/**
+	 * Require that a string match the given pattern.
+	 *
+	 * @param pattern The regular expression pattern to match
+	 *
+	 * @return A requirement instance accepting only strings matching the given regular expression pattern
+	 *
+	 * @throws NullPointerException if pattern is {@code null}
+	 */
+	public static Requirement<String> matches(Pattern pattern) {
+		return Requirement.fromPredicate(pattern.asMatchPredicate(), "value must match the pattern " + pattern);
+	}
+
+	/**
+	 * Require that a string match the given pattern.
+	 *
+	 * @param regex The regular expression to match
+	 *
+	 * @return A requirement instance accepting only strings matching the given regular expression
+	 *
+	 * @throws NullPointerException   if regex is {@code null}
+	 * @throws PatternSyntaxException if regex does not represent a valid regular expression
+	 */
+	public static Requirement<String> matches(String regex) {
+		Objects.requireNonNull(regex);
+		return Requirement.fromPredicate(Pattern.compile(regex).asMatchPredicate(),
+		                                 "value must match the pattern " + regex);
+	}
+
 
 	/**
 	 * Require that a list be non-empty.
