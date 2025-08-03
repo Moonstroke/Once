@@ -105,6 +105,11 @@ public class Requirements {
 	/**
 	 * Require that a byte value be in a specified range.
 	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only bytes inside the range described by the given boundaries, included
+	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Byte> inRange(byte min, byte max) {
@@ -118,6 +123,11 @@ public class Requirements {
 
 	/**
 	 * Require that a short integer be in a specified range.
+	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only shorts inside the range described by the given boundaries, included
 	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
@@ -133,6 +143,11 @@ public class Requirements {
 	/**
 	 * Require that an integral number be in a specified range.
 	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only ints inside the range described by the given boundaries, included
+	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Integer> inRange(int min, int max) {
@@ -147,6 +162,11 @@ public class Requirements {
 	/**
 	 * Require that a long integer be in a specified range.
 	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only longs inside the range described by the given boundaries, included
+	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Long> inRange(long min, long max) {
@@ -160,6 +180,11 @@ public class Requirements {
 	/**
 	 * Require that a floating-point number be in a specified range.
 	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only floats inside the range described by the given boundaries, included
+	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Float> inRange(float min, float max) {
@@ -172,6 +197,12 @@ public class Requirements {
 
 	/**
 	 * Require that a double-precision floating-point number be in a specified range.
+	 *
+	 * @param min The lower boundary of the range
+	 * @param max The upper boundary of the range
+	 *
+	 * @return A requirement instance accepting only doubles inside the range described by the given boundaries,
+	 *         included
 	 *
 	 * @throws IllegalArgumentException if min is greater than max
 	 */
