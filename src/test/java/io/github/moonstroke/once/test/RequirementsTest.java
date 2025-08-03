@@ -227,6 +227,11 @@ class RequirementsTest {
 	}
 
 	@Test
+	void testRequirementsInRangeByteRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange((byte) 5, (byte) 1));
+	}
+
+	@Test
 	void testRequirementsInRangeByteRejectsByteBelowRange() {
 		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
 		assertDoesNotThrow(() -> once.set((byte) 0));
@@ -254,6 +259,11 @@ class RequirementsTest {
 	void testRequirementsInRangeByteRejectsByteAboveRange() {
 		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
 		assertDoesNotThrow(() -> once.set((byte) 7));
+	}
+
+	@Test
+	void testRequirementsInRangeShortRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange((short) 5, (short) 1));
 	}
 
 	@Test
@@ -287,6 +297,11 @@ class RequirementsTest {
 	}
 
 	@Test
+	void testRequirementsInRangeIntRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange(5, 1));
+	}
+
+	@Test
 	void testRequirementsInRangeIntRejectsIntBelowRange() {
 		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
 		assertDoesNotThrow(() -> once.set(0));
@@ -314,6 +329,11 @@ class RequirementsTest {
 	void testRequirementsInRangeIntRejectsIntAboveRange() {
 		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.inRange(1, 5));
 		assertDoesNotThrow(() -> once.set(7));
+	}
+
+	@Test
+	void testRequirementsInRangeLongRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange(5L, 1L));
 	}
 
 	@Test
@@ -347,6 +367,11 @@ class RequirementsTest {
 	}
 
 	@Test
+	void testRequirementsInRangeFloatRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange(1.75F, 1.25F));
+	}
+
+	@Test
 	void testRequirementsInRangeFloatRejectsFloatBelowRange() {
 		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
 		assertDoesNotThrow(() -> once.set(1F));
@@ -374,6 +399,11 @@ class RequirementsTest {
 	void testRequirementsInRangeFloatRejectsFloatAboveRange() {
 		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.inRange(1.25F, 1.75F));
 		assertDoesNotThrow(() -> once.set(2F));
+	}
+
+	@Test
+	void testRequirementsInRangeDoubleRejectsRangeMinGreaterThanMax() {
+		assertThrows(IllegalArgumentException.class, () -> Requirements.inRange(1.75, 1.25));
 	}
 
 	@Test
