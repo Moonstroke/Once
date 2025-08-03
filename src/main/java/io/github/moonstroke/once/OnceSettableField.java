@@ -5,6 +5,9 @@ package io.github.moonstroke.once;
  */
 public class OnceSettableField<T> {
 
+	private T value;
+
+
 	/**
 	 * Create a field of given name that can only be set once.
 	 *
@@ -14,7 +17,6 @@ public class OnceSettableField<T> {
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	public OnceSettableField(String name) {
-		throw new UnsupportedOperationException("Not implemented"); // TODO
 	}
 
 	/**
@@ -26,7 +28,7 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException  if value is {@code null}
 	 */
 	public void set(T value) {
-		throw new UnsupportedOperationException("Not implemented"); // TODO
+		this.value = value;
 	}
 
 	/**
@@ -37,6 +39,6 @@ public class OnceSettableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
-		throw new UnsupportedOperationException("Not implemented"); // TODO
+		return value;
 	}
 }
