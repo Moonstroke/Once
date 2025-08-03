@@ -40,8 +40,8 @@ public class Requirements {
 	 *
 	 * @throws NullPointerException if pattern is {@code null}
 	 */
-	public static Requirement<String> matches(Pattern pattern) {
-		return Requirement.fromPredicate(pattern.asMatchPredicate(), "value must match the pattern " + pattern);
+	public static Requirement<CharSequence> matches(Pattern pattern) {
+		return Requirement.fromPredicate(s -> pattern.matcher(s).matches(), "value must match the pattern " + pattern);
 	}
 
 	/**
@@ -54,10 +54,10 @@ public class Requirements {
 	 * @throws NullPointerException   if regex is {@code null}
 	 * @throws PatternSyntaxException if regex does not represent a valid regular expression
 	 */
-	public static Requirement<String> matches(String regex) {
+	public static Requirement<CharSequence> matches(String regex) {
 		Objects.requireNonNull(regex);
-		return Requirement.fromPredicate(Pattern.compile(regex).asMatchPredicate(),
-		                                 "value must match the pattern " + regex);
+		Pattern pattern = Pattern.compile(regex);
+		return Requirement.fromPredicate(s -> pattern.matcher(s).matches(), "value must match the pattern " + regex);
 	}
 
 
