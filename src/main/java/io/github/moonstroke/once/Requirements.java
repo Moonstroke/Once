@@ -87,4 +87,10 @@ public class Requirements {
 	 */
 	public static final Requirement<Double> DOUBLE_FINITE = Requirement.fromPredicate(Double::isFinite,
 	                                                                                  "value must not be an infinite");
+
+	/**
+	 * Require that a number be non-negative (i.e. positive or zero).
+	 */
+	public static final Requirement<Number> NOT_NEGATIVE = Requirement.fromPredicate(n -> n.doubleValue() >= 0,
+	                                                                                 "value must not be negative");
 }

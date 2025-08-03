@@ -189,4 +189,22 @@ class RequirementsTest {
 		                                                         Requirements.DOUBLE_FINITE);
 		assertDoesNotThrow(() -> once.set(42D));
 	}
+
+	@Test
+	void testRequirementsNotNegativeRejectsNegativeByte() {
+		OnceSettableField<Byte> once = new OnceSettableField<>("field", Requirements.NOT_NEGATIVE);
+		assertThrows(IllegalArgumentException.class, () -> once.set((byte) 0x84));
+	}
+
+	@Test
+	void testRequirementsNotNegativeAcceptsPositiveShort() {
+		OnceSettableField<Short> once = new OnceSettableField<>("field", Requirements.NOT_NEGATIVE);
+		assertDoesNotThrow(() -> once.set((short) 42));
+	}
+
+	@Test
+	void testRequirementsNotNegativeAcceptsZeroLong() {
+		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.NOT_NEGATIVE);
+		assertDoesNotThrow(() -> once.set(0L));
+	}
 }
