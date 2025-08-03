@@ -15,7 +15,7 @@ public class OnceSettableField<T> {
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	@SafeVarargs
-	public OnceSettableField(String name, Requirement<T>... requirements) {
+	public OnceSettableField(String name, Requirement<? super T>... requirements) {
 		throw new UnsupportedOperationException("Not implemented"); // TODO
 	}
 
