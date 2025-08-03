@@ -36,6 +36,12 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException  if value is {@code null}
 	 */
 	public void set(T value) {
+		if (this.value != null) {
+			throw new IllegalStateException(name + " is already set");
+		}
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
 		this.value = value;
 	}
 
@@ -47,6 +53,9 @@ public class OnceSettableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
+		if (value == null) {
+			throw new IllegalStateException(name + " has not been set");
+		}
 		return value;
 	}
 }
