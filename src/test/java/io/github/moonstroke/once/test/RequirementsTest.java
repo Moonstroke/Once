@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +39,42 @@ class RequirementsTest {
 	void testRequirementsStringNotBlankAcceptsNonBlankString() {
 		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.STRING_NOT_BLANK);
 		assertDoesNotThrow(() -> once.set("not blank"));
+	}
+
+	@Test
+	void testRequirementsMatchesPatternRejectsNull() {
+		assertThrows(NullPointerException.class, () -> Requirements.matches((Pattern) null));
+	}
+
+	@Test
+	void testRequirementsMatchesPatternAcceptsMatchingString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field",
+		                                                         Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
+		assertDoesNotThrow(() -> once.set("foobaz"));
+	}
+
+	@Test
+	void testRequirementsMatchesPatternRejectsNonMatchingString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field",
+		                                                         Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
+		assertDoesNotThrow(() -> once.set("foobar"));
+	}
+
+	@Test
+	void testRequirementsMatchesStringRejectsNull() {
+		assertThrows(NullPointerException.class, () -> Requirements.matches((String) null));
+	}
+
+	@Test
+	void testRequirementsMatchesStringAcceptsMatchingString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.matches(Pattern.compile("a+b")));
+		assertDoesNotThrow(() -> once.set("aab"));
+	}
+
+	@Test
+	void testRequirementsMatchesStringRejectsNonMatchingString() {
+		OnceSettableField<String> once = new OnceSettableField<>("field", Requirements.matches("a+b"));
+		assertDoesNotThrow(() -> once.set("aaa"));
 	}
 
 	@Test
