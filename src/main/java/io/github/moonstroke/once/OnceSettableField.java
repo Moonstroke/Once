@@ -5,6 +5,7 @@ package io.github.moonstroke.once;
  */
 public class OnceSettableField<T> {
 
+	private final String name;
 	private T value;
 
 
@@ -17,6 +18,7 @@ public class OnceSettableField<T> {
 	 * @throws IllegalArgumentException if name is empty
 	 */
 	public OnceSettableField(String name) {
+		this.name = name;
 	}
 
 	/**
