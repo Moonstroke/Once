@@ -207,4 +207,22 @@ class RequirementsTest {
 		OnceSettableField<Long> once = new OnceSettableField<>("field", Requirements.NOT_NEGATIVE);
 		assertDoesNotThrow(() -> once.set(0L));
 	}
+
+	@Test
+	void testRequirementsPositiveRejectsNegativeInt() {
+		OnceSettableField<Integer> once = new OnceSettableField<>("field", Requirements.POSITIVE);
+		assertThrows(IllegalArgumentException.class, () -> once.set(-1));
+	}
+
+	@Test
+	void testRequirementsPositiveRejectsZeroFloat() {
+		OnceSettableField<Float> once = new OnceSettableField<>("field", Requirements.POSITIVE);
+		assertDoesNotThrow(() -> once.set(0F));
+	}
+
+	@Test
+	void testRequirementsPositiveAcceptsPositiveDouble() {
+		OnceSettableField<Double> once = new OnceSettableField<>("field", Requirements.POSITIVE);
+		assertDoesNotThrow(() -> once.set(42.5D));
+	}
 }
