@@ -104,8 +104,13 @@ public class Requirements {
 
 	/**
 	 * Require that a byte value be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Byte> inRange(byte min, byte max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(b -> min <= b && b <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
@@ -113,8 +118,13 @@ public class Requirements {
 
 	/**
 	 * Require that a short integer be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Short> inRange(short min, short max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(s -> min <= s && s <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
@@ -122,8 +132,13 @@ public class Requirements {
 
 	/**
 	 * Require that an integral number be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Integer> inRange(int min, int max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(i -> min <= i && i <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
@@ -131,24 +146,39 @@ public class Requirements {
 
 	/**
 	 * Require that a long integer be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Long> inRange(long min, long max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(l -> min <= l && l <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
 
 	/**
 	 * Require that a floating-point number be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Float> inRange(float min, float max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(f -> min <= f && f <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
 
 	/**
 	 * Require that a double-precision floating-point number be in a specified range.
+	 *
+	 * @throws IllegalArgumentException if min is greater than max
 	 */
 	public static Requirement<Double> inRange(double min, double max) {
+		if (min > max) {
+			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
+		}
 		return Requirement.fromPredicate(d -> min <= d && d <= max,
 		                                 "value must be between " + min + " and " + max + " inclusive");
 	}
