@@ -19,6 +19,14 @@ public class Requirements {
 
 
 	/**
+	 * A special requirement instance that alters the default behavior of class {@link OnceSettableField} by allowing
+	 * setting the field to {@code null}.
+	 */
+	public static final Requirement<Object> ALLOW_NULL = o -> {
+		/* Nothing to do; it is the presence of the object itself that matters */
+	};
+
+	/**
 	 * Require a string to be non-empty.
 	 */
 	public static final Requirement<String> STRING_NOT_EMPTY = Requirement.fromPredicate(str -> !str.isEmpty(),
