@@ -31,7 +31,7 @@ public interface Requirement<T> {
 	 * @throws NullPointerException if predicate is {@code null}
 	 */
 	public static <U> Requirement<U> fromPredicate(Predicate<U> predicate) {
-		throw new UnsupportedOperationException("Not implemented"); // TODO
+		return fromPredicate(predicate, "requirement not met");
 	}
 
 	/**
