@@ -92,6 +92,10 @@ public class OnceSettableField<T> {
 		return value;
 	}
 
+	public Optional<T> getOpt() {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
+
 	/**
 	 * Retrieve the instance's value, or return the provided default if unset.
 	 *
