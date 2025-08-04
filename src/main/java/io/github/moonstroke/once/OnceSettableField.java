@@ -3,6 +3,7 @@ package io.github.moonstroke.once;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -49,6 +50,10 @@ public class OnceSettableField<T> {
 		this.value = value;
 	}
 
+	public void setFrom(Supplier<T> supplier) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
+
 	/**
 	 * Initialize the instance's value and return whether the operation succeeded.
 	 *
@@ -67,6 +72,10 @@ public class OnceSettableField<T> {
 		}
 		this.value = value;
 		return true;
+	}
+
+	public boolean trySetFrom(Supplier<T> supplier) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
 
 	/**
