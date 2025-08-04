@@ -1,5 +1,7 @@
 package io.github.moonstroke.once;
 
+import java.util.function.Consumer;
+
 /**
  * A special container for a single value, allowing only a single initialization.
  */
@@ -91,5 +93,9 @@ public class OnceSettableField<T> {
 			return defaultValue;
 		}
 		return value;
+	}
+
+	public void ifSet(Consumer<T> consumer) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
 }
