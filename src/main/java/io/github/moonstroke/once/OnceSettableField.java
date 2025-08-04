@@ -46,6 +46,19 @@ public class OnceSettableField<T> {
 	}
 
 	/**
+	 * Initialize the instance's value and return whether the operation succeeded.
+	 *
+	 * @param value The value to set
+	 *
+	 * @return {@code true} if the value was actually set, {@code false} if it was already set
+	 *
+	 * @throws NullPointerException if value is {@code null}
+	 */
+	public boolean trySet(T value) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
+
+	/**
 	 * Retrieve the instance's value, or fail if it has not been set.
 	 *
 	 * @return the value set
