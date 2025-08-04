@@ -47,6 +47,10 @@ public interface Requirement<T> {
 	 * @throws IllegalArgumentException if message is empty
 	 */
 	public static <U> Requirement<U> fromPredicate(Predicate<U> predicate, String message) {
-		throw new UnsupportedOperationException("Not implemented"); // TODO
+		return value -> {
+			if (predicate.test(value)) {
+				throw new IllegalArgumentException(message);
+			}
+		};
 	}
 }
