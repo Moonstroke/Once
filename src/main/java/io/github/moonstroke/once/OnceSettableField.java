@@ -55,7 +55,14 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException if value is {@code null}
 	 */
 	public boolean trySet(T value) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (this.value != null) {
+			return false;
+		}
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
+		this.value = value;
+		return true;
 	}
 
 	/**
