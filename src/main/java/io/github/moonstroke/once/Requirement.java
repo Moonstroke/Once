@@ -1,5 +1,6 @@
 package io.github.moonstroke.once;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -47,6 +48,11 @@ public interface Requirement<T> {
 	 * @throws IllegalArgumentException if message is empty
 	 */
 	public static <U> Requirement<U> fromPredicate(Predicate<U> predicate, String message) {
+		Objects.requireNonNull(predicate);
+		Objects.requireNonNull(message);
+		if (message.isEmpty()) {
+			throw new IllegalArgumentException("cannot throw an empty message");
+		}
 		return value -> {
 			if (predicate.test(value)) {
 				throw new IllegalArgumentException(message);
