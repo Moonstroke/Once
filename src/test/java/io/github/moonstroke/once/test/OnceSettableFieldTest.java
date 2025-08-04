@@ -83,4 +83,25 @@ class OnceSettableFieldTest {
 		once.set(value);
 		assertEquals(value, once.get());
 	}
+
+	@Test
+	void testGetDefaultAcceptsNull() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertDoesNotThrow(() -> once.get(null));
+	}
+
+	@Test
+	void testGetDefaultReturnsStoredValueIfSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		Object value = new Object(), defaultValue = new Object();
+		once.set(value);
+		assertEquals(value, once.get(defaultValue));
+	}
+
+	@Test
+	void testGetDefaultReturnsDefaultValueIfNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		Object defaultValue = new Object();
+		assertEquals(defaultValue, once.get(defaultValue));
+	}
 }
