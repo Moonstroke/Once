@@ -71,4 +71,15 @@ public class OnceSettableField<T> {
 		}
 		return value;
 	}
+
+	/**
+	 * Retrieve the instance's value, or return the provided default if unset.
+	 *
+	 * @param defaultValue The default value, {@code null} accepted
+	 *
+	 * @return the value set, or the default one if unset
+	 */
+	public T get(T defaultValue) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
 }
