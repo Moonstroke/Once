@@ -1,6 +1,8 @@
 package io.github.moonstroke.once;
 
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -93,6 +95,10 @@ public class OnceSettableField<T> {
 			return defaultValue;
 		}
 		return value;
+	}
+
+	public <R> Optional<R> map(Function<T, R> mapFunction) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
 
 	public void ifSet(Consumer<T> consumer) {
