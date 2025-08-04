@@ -87,6 +87,9 @@ public class OnceSettableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
 	}
 }
