@@ -59,7 +59,7 @@ public class OnceSettableField<T> {
 	 * @param supplier The function providing the value to set
 	 *
 	 * @throws IllegalStateException if the value has already been initialized
-	 * @throws NullPointerException  if supplier is {@code null}
+	 * @throws NullPointerException  if supplier is, or returns, {@code null}
 	 */
 	public void setFrom(Supplier<T> supplier) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
@@ -95,7 +95,7 @@ public class OnceSettableField<T> {
 	 *
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
-	 * @throws NullPointerException if supplier is {@code null}
+	 * @throws NullPointerException if supplier is, or returns, {@code null}
 	 */
 	public boolean trySetFrom(Supplier<T> supplier) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
