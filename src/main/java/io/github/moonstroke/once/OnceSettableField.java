@@ -50,6 +50,17 @@ public class OnceSettableField<T> {
 		this.value = value;
 	}
 
+	/**
+	 * Initialize the instance's value using the specified supplier function.
+	 *
+	 * The supplier function will only be invoked if the value is not set yet, so this method can be convenient for
+	 * cases where the computation of the value is expensive, as it can avoid the cost if not necessary.
+	 *
+	 * @param supplier The function providing the value to set
+	 *
+	 * @throws IllegalStateException if the value has already been initialized
+	 * @throws NullPointerException  if supplier is {@code null}
+	 */
 	public void setFrom(Supplier<T> supplier) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
@@ -74,6 +85,18 @@ public class OnceSettableField<T> {
 		return true;
 	}
 
+	/**
+	 * Initialize the instance's value using the specified supplier function and return whether the operation succeeded.
+	 *
+	 * The supplier function will only be invoked if the value is not set yet, so this method can be convenient for
+	 * cases where the computation of the value is expensive, as it can avoid the cost if not necessary.
+	 *
+	 * @param supplier The function providing the value to set
+	 *
+	 * @return {@code true} if the value was actually set, {@code false} if it was already set
+	 *
+	 * @throws NullPointerException if supplier is {@code null}
+	 */
 	public boolean trySetFrom(Supplier<T> supplier) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
@@ -92,6 +115,11 @@ public class OnceSettableField<T> {
 		return value;
 	}
 
+	/**
+	 * Retrieve an optional instance wrapping the object's value if present, or an empty optional otherwise.
+	 *
+	 * @return an {@link Optional} wrapping the value, or an empty one; never {@code null}
+	 */
 	public Optional<T> getOpt() {
 		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
@@ -110,10 +138,27 @@ public class OnceSettableField<T> {
 		return value;
 	}
 
+	/**
+	 * Retrieve the value and transform it using to the given function.
+	 *
+	 * @param <R>         The output type of the transformation function
+	 * @param mapFunction The transformation function
+	 *
+	 * @return an {@link Optional} containing the transformed value, or an empty one if the value is not set
+	 *
+	 * @throws NullPointerException if mapFunction is {@code null}
+	 */
 	public <R> Optional<R> map(Function<T, R> mapFunction) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
 
+	/**
+	 * Call the provided function with the value if it is set.
+	 *
+	 * @param consumer The function to call if the value is set
+	 *
+	 * @throws NullPointerException if consumer is {@code null}
+	 */
 	public void ifSet(Consumer<T> consumer) {
 		throw new UnsupportedOperationException("not implemented"); // TODO
 	}
