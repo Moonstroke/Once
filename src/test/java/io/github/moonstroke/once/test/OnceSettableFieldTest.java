@@ -14,24 +14,24 @@ import io.github.moonstroke.once.OnceSettableField;
 class OnceSettableFieldTest {
 
 	@Test
-	void testConstructorCallNullNameFails() {
+	void testConstructorNullNameFails() {
 		assertThrows(NullPointerException.class, () -> new OnceSettableField<>(null));
 	}
 
 	@Test
-	void testConstructorCallEmptyNameFails() {
+	void testConstructorEmptyNameFails() {
 		assertThrows(IllegalArgumentException.class, () -> new OnceSettableField<>(""));
 	}
 
 	@Test
-	void testFirstCallToSetDoesNotFail() {
+	void testSetFirstCallSucceeds() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		assertDoesNotThrow(() -> once.set(value));
 	}
 
 	@Test
-	void testSecondCallToSetFails() {
+	void testSetSecondCallFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
@@ -39,31 +39,31 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testCallToSetNullFails() {
+	void testSetNullValueFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.set(null));
 	}
 
 	@Test
-	void testCallToSetFromNullFails() {
+	void testSetFromNullSupplierFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.setFrom(null));
 	}
 
 	@Test
-	void testCallToSetFromNullSuppliedFails() {
+	void testSetFromSupplierReturnsNullFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.setFrom(() -> null));
 	}
 
 	@Test
-	void testCallToSetFromNonNullSucceeds() {
+	void testSetFromNonNullSupplierSucceeds() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertDoesNotThrow(() -> once.setFrom(Object::new));
 	}
 
 	@Test
-	void testCallToSetFromCallsSupplier() {
+	void testSetFromInvokesSupplier() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		boolean[] called = new boolean[1];
 		assertDoesNotThrow(() -> once.setFrom(() -> {
@@ -74,7 +74,7 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testCallToSetFromSetsSuppliedValue() {
+	void testSetFromSetsSuppliedValue() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		assertDoesNotThrow(() -> once.setFrom(() -> value));
@@ -82,21 +82,21 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testCallToSetFromFailsIfAlreadySet() {
+	void testSetFromFailsIfAlreadySet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertThrows(IllegalStateException.class, () -> once.setFrom(Object::new));
 	}
 
 	@Test
-	void testCallToSetFromDoesNotCallSupplierIfAlreadySet() {
+	void testSetFromDoesNotInvokeSupplierIfAlreadySet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
-		assertThrows(IllegalStateException.class, () -> once.setFrom(() -> fail("supplier should not be called")));
+		assertThrows(IllegalStateException.class, () -> once.setFrom(() -> fail("supplier should not have been called")));
 	}
 
 	@Test
-	void testCallToTrySetNullFails() {
+	void testTrySetNullValueFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.trySet(null));
 	}
@@ -108,32 +108,32 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testTrySetReturnsTrueWhenDidNotSet() {
+	void testTrySetReturnsFalseWhenDidNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertFalse(once.trySet(new Object()));
 	}
 
 	@Test
-	void testCallToTrySetFromNullFails() {
+	void testTrySetFromNullSupplierFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.trySetFrom(null));
 	}
 
 	@Test
-	void testCallToTrySetFromNullSuppliedFails() {
+	void testTrySetFromSupplierReturnsNullFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.trySetFrom(() -> null));
 	}
 
 	@Test
-	void testCallToTrySetFromNonNullSucceeds() {
+	void testTrySetFromNonNullSupplierSucceeds() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertTrue(once.trySetFrom(Object::new));
 	}
 
 	@Test
-	void testCallToTrySetFromCallsSupplier() {
+	void testTrySetFromInvokesSupplier() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		boolean[] called = new boolean[1];
 		assertTrue(once.trySetFrom(() -> {
@@ -144,7 +144,7 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testCallToTrySetFromSetsSuppliedValue() {
+	void testTrySetFromSetsSuppliedValue() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		assertTrue(once.trySetFrom(() -> value));
@@ -152,27 +152,27 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testCallToTrySetFromReturnsFalseIfAlreadySet() {
+	void testTrySetFromReturnsFalseIfAlreadySet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertFalse(once.trySetFrom(Object::new));
 	}
 
 	@Test
-	void testCallToTrySetFromDoesNotCallSupplierIfAlreadySet() {
+	void testTrySetFromDoesNotInvokeSupplierIfAlreadySet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
-		assertFalse(once.trySetFrom(() -> fail("supplier should not be called")));
+		assertFalse(once.trySetFrom(() -> fail("supplier should not have been called")));
 	}
 
 	@Test
-	void testCallToGetWithoutSetFails() {
+	void testGetFailsIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(IllegalStateException.class, () -> once.get());
 	}
 
 	@Test
-	void testCallToGetAfterSetDoesNotFail() {
+	void testGetSucceedsIfSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
@@ -188,20 +188,20 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testGetOptReturnsEmptyOptionalWhenNotSet() {
+	void testGetOptReturnsEmptyOptionalIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertTrue(once.getOpt().isEmpty());
 	}
 
 	@Test
-	void testGetOptReturnsNotEmptyOptionalWhenSet() {
+	void testGetOptReturnsNotEmptyOptionalIfSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertFalse(once.getOpt().isEmpty());
 	}
 
 	@Test
-	void testGetOptReturnsValueInOptionalWhenSet() {
+	void testGetOptReturnsWrappedValuePassedToSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object();
 		once.set(value);
@@ -209,13 +209,13 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testGetDefaultAcceptsNull() {
+	void testGetDefaultNullDefautlValueSucceeds() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertDoesNotThrow(() -> once.get(null));
 	}
 
 	@Test
-	void testGetDefaultReturnsStoredValueIfSet() {
+	void testGetDefaultReturnsValuePassedToSetIfSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		Object value = new Object(), defaultValue = new Object();
 		once.set(value);
@@ -230,7 +230,7 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testMapNullParamFails() {
+	void testMapNullFunctionFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertThrows(NullPointerException.class, () -> once.map(null));
@@ -243,13 +243,13 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testMapParamNotCalledIfNotSet() {
+	void testMapFunctionNotInvokedIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
-		assertThrows(IllegalStateException.class, () -> once.map(object -> fail("function should not be called")));
+		assertThrows(IllegalStateException.class, () -> once.map(object -> fail("function should not have been called")));
 	}
 
 	@Test
-	void testMapParamCalledIfSet() {
+	void testMapFunctionInvokedIfSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		boolean[] called = new boolean[1];
@@ -261,7 +261,7 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testMapParamReturnsNullDoesNotFail() {
+	void testMapFunctionReturnsNullSucceeds() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertDoesNotThrow(() -> once.map(object -> null));
@@ -275,27 +275,27 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
-	void testMapParamReturnsNotNullReturnsNotEmptyOptional() {
+	void testMapFunctionReturnsNotNullReturnsNotEmptyOptional() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertFalse(once.map(String::valueOf).isEmpty());
 	}
 
 	@Test
-	void testIfSetNullParamFails() {
+	void testIfSetNullConsumerFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		assertThrows(NullPointerException.class, () -> once.ifSet(null));
 	}
 
 	@Test
-	void testIfSetParamNotCalledIfNotSet() {
+	void testIfSetConsumerNotInvokedIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
-		once.ifSet(object -> fail("consumer should not be called"));
+		once.ifSet(object -> fail("consumer should not have been called"));
 	}
 
 	@Test
-	void testIfSetParamCalledIfSet() {
+	void testIfSetConsumerInvokedIfSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		once.set(new Object());
 		boolean[] called = new boolean[1];
