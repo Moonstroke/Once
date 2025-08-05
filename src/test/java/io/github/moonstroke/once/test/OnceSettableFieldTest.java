@@ -245,12 +245,7 @@ class OnceSettableFieldTest {
 	@Test
 	void testMapParamNotCalledIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
-		boolean[] called = new boolean[1];
-		assertThrows(IllegalStateException.class, () -> once.map(object -> {
-			called[0] = true;
-			return String.valueOf(object);
-		}));
-		assertFalse(called[0]);
+		assertThrows(IllegalStateException.class, () -> once.map(object -> fail("function should not be called")));
 	}
 
 	@Test
@@ -296,11 +291,7 @@ class OnceSettableFieldTest {
 	@Test
 	void testIfSetParamNotCalledIfNotSet() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
-		boolean[] called = new boolean[1];
-		once.ifSet(object -> {
-			called[0] = true;
-		});
-		assertFalse(called[0]);
+		once.ifSet(object -> fail("consumer should not be called"));
 	}
 
 	@Test
