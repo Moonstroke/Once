@@ -228,4 +228,61 @@ class OnceSettableFieldTest {
 		Object defaultValue = new Object();
 		assertEquals(defaultValue, once.get(defaultValue));
 	}
+
+	@Test
+	void testMapNullParamFails() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertThrows(NullPointerException.class, () -> once.map(null));
+	}
+
+	@Test
+	void testMapFailsIfNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertThrows(IllegalStateException.class, () -> once.map(String::valueOf));
+	}
+
+	@Test
+	void testMapParamNotCalledIfNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		boolean[] called = new boolean[1];
+		assertThrows(IllegalStateException.class, () -> once.map(object -> {
+			called[0] = true;
+			return String.valueOf(object);
+		}));
+		assertFalse(called[0]);
+	}
+
+	@Test
+	void testMapParamCalledIfSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		boolean[] called = new boolean[1];
+		assertDoesNotThrow(() -> once.map(object -> {
+			called[0] = true;
+			return String.valueOf(object);
+		}));
+		assertTrue(called[0]);
+	}
+
+	@Test
+	void testMapParamReturnsNullDoesNotFail() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertDoesNotThrow(() -> once.map(object -> null));
+	}
+
+	@Test
+	void testMapParamReturnsNullReturnsEmptyOptional() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertTrue(once.map(object -> null).isEmpty());
+	}
+
+	@Test
+	void testMapParamReturnsNotNullReturnsNotEmptyOptional() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertFalse(once.map(String::valueOf).isEmpty());
+	}
 }
