@@ -285,4 +285,32 @@ class OnceSettableFieldTest {
 		once.set(new Object());
 		assertFalse(once.map(String::valueOf).isEmpty());
 	}
+
+	@Test
+	void testIfSetNullParamFails() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertThrows(NullPointerException.class, () -> once.ifSet(null));
+	}
+
+	@Test
+	void testIfSetParamNotCalledIfNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		boolean[] called = new boolean[1];
+		once.ifSet(object -> {
+			called[0] = true;
+		});
+		assertFalse(called[0]);
+	}
+
+	@Test
+	void testIfSetParamCalledIfSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		boolean[] called = new boolean[1];
+		once.ifSet(object -> {
+			called[0] = true;
+		});
+		assertTrue(called[0]);
+	}
 }
