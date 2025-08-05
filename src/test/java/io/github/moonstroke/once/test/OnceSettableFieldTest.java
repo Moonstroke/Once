@@ -188,6 +188,27 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
+	void testGetOptReturnsEmptyOptionalWhenNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertTrue(once.getOpt().isEmpty());
+	}
+
+	@Test
+	void testGetOptReturnsNotEmptyOptionalWhenSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertFalse(once.getOpt().isEmpty());
+	}
+
+	@Test
+	void testGetOptReturnsValueInOptionalWhenSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		Object value = new Object();
+		once.set(value);
+		assertEquals(value, once.getOpt().get());
+	}
+
+	@Test
 	void testGetDefaultAcceptsNull() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertDoesNotThrow(() -> once.get(null));
