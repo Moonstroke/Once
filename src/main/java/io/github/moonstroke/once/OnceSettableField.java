@@ -92,4 +92,44 @@ public class OnceSettableField<T> {
 		}
 		return value;
 	}
+
+	/**
+	 * Return a hash code of the value, if set; otherwise, return {@code 0}.
+	 *
+	 * @return the hash code of the instance's value if set, or {@code 0} if it is not set
+	 */
+	@Override
+	public int hashCode() {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
+
+	/**
+	 * Indicate whether the given object is equal to this instance.
+	 *
+	 * The two objects are equal if the following holds:
+	 * <ul>
+	 * <li>it is not {@code null},
+	 * <li>it is a {@code OnceSettableField} instance,
+	 * <li>its value is unset if and this instance's value is unset, or
+	 * <li>its value is set to one that compare equal to the one set in this instance.
+	 * </ul>
+	 *
+	 * @param o The object to compare
+	 *
+	 * @return {@code true} if the two objects compare equal
+	 */
+	@Override
+	public boolean equals(Object o) {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
+
+	/**
+	 * Return a string representation of this object.
+	 *
+	 * @return a String representation of this object
+	 */
+	@Override
+	public String toString() {
+		throw new UnsupportedOperationException("not implemented"); // TODO
+	}
 }
