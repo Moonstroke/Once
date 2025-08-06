@@ -104,4 +104,77 @@ class OnceSettableFieldTest {
 		Object defaultValue = new Object();
 		assertEquals(defaultValue, once.get(defaultValue));
 	}
+
+	@Test
+	void testEqualsNullReturnsFalseWhenUnset() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertFalse(once.equals(null));
+	}
+
+	@Test
+	void testEqualsNullReturnsFalseWhenSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertFalse(once.equals(null));
+	}
+
+	@Test
+	void testEqualsSelfReturnsTrue() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertTrue(once.equals(once));
+	}
+
+	@Test
+	void testEqualsUnsetInstReturnsTrueWhenUnset() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertTrue(once.equals(new OnceSettableField<>("other")));
+	}
+
+	@Test
+	void testEqualsUnsetInstReturnsFalseWhenSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		assertFalse(once.equals(new OnceSettableField<>("other")));
+	}
+
+	@Test
+	void testEqualsSetInstReturnsFalseWhenUnset() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		OnceSettableField<Object> other = new OnceSettableField<>("other");
+		other.set(new Object());
+		assertFalse(once.equals(other));
+	}
+
+	@Test
+	void testEqualsInstSetSameValueReturnsTrue() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		Object value = new Object();
+		once.set(value);
+		OnceSettableField<Object> other = new OnceSettableField<>("other");
+		other.set(value);
+		assertTrue(once.equals(other));
+	}
+
+	@Test
+	void testEqualsInstSetOtherValueReturnsFalse() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		once.set(new Object());
+		OnceSettableField<Object> other = new OnceSettableField<>("other");
+		other.set(new Object());
+		assertFalse(once.equals(other));
+	}
+
+	@Test
+	void testHashCodeReturnsZeroIfNotSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertEquals(0, once.hashCode());
+	}
+
+	@Test
+	void testHashCodeReturnsValueHashCodeIfSet() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		Object value = new Object();
+		once.set(value);
+		assertEquals(value.hashCode(), once.hashCode());
+	}
 }
