@@ -45,6 +45,9 @@ public class OnceSettableField<T> {
 		if (value == null) {
 			throw new NullPointerException("Cannot set a null value");
 		}
+		if (value == this) {
+			throw new IllegalArgumentException("cannot set the value to itself");
+		}
 		this.value = value;
 	}
 
@@ -64,6 +67,9 @@ public class OnceSettableField<T> {
 		}
 		if (value == null) {
 			throw new NullPointerException("Cannot set a null value");
+		}
+		if (value == this) {
+			throw new IllegalArgumentException("cannot set the value to itself");
 		}
 		this.value = value;
 		return true;
