@@ -122,7 +122,14 @@ public class OnceSettableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (!(o instanceof OnceSettableField)) {
+			return false;
+		}
+		Object otherValue = ((OnceSettableField<?>) o).value;
+		if (value == null) {
+			return otherValue == null;
+		}
+		return value.equals(otherValue);
 	}
 
 	/**
