@@ -177,4 +177,10 @@ class OnceSettableFieldTest {
 		once.set(value);
 		assertEquals(value.hashCode(), once.hashCode());
 	}
+
+	@Test
+	void testToStringSucceedsWhenUnset() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertDoesNotThrow(once::toString);
+	}
 }
