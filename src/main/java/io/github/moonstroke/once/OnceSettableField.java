@@ -35,6 +35,7 @@ public class OnceSettableField<T> {
 	 * @param value The value to set
 	 *
 	 * @throws IllegalStateException if the value has already been initialized
+	 * @throws IllegalArgumentException if value is {@code this}
 	 * @throws NullPointerException  if value is {@code null}
 	 */
 	public void set(T value) {
@@ -54,6 +55,7 @@ public class OnceSettableField<T> {
 	 *
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
+	 * @throws IllegalArgumentException if value is {@code this}
 	 * @throws NullPointerException if value is {@code null}
 	 */
 	public boolean trySet(T value) {
