@@ -1,5 +1,7 @@
 package io.github.moonstroke.once;
 
+import java.util.Objects;
+
 /**
  * A special container for a single value, allowing only a single initialization.
  */
@@ -100,7 +102,7 @@ public class OnceSettableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		return Objects.hashCode(value);
 	}
 
 	/**
