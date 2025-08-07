@@ -44,9 +44,21 @@ class OnceSettableFieldTest {
 	}
 
 	@Test
+	void testCallToSetSelfFails() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertThrows(IllegalArgumentException.class, () -> once.set(once));
+	}
+
+	@Test
 	void testCallToTrySetNullFails() {
 		OnceSettableField<Object> once = new OnceSettableField<>("field");
 		assertThrows(NullPointerException.class, () -> once.trySet(null));
+	}
+
+	@Test
+	void testCallToTrySetSelfFails() {
+		OnceSettableField<Object> once = new OnceSettableField<>("field");
+		assertThrows(IllegalArgumentException.class, () -> once.trySet(once));
 	}
 
 	@Test
