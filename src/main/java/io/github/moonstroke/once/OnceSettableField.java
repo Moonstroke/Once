@@ -139,6 +139,15 @@ public class OnceSettableField<T> {
 	 */
 	@Override
 	public String toString() {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getName());
+		sb.append('(');
+		if (value == null) {
+			sb.append("not set");
+		} else {
+			sb.append(value.toString());
+		}
+		sb.append(')');
+		return sb.toString();
 	}
 }
