@@ -142,7 +142,7 @@ public class OnceSettableField<T> {
 	 * @return an {@link Optional} wrapping the value, or an empty one; never {@code null}
 	 */
 	public Optional<T> getOpt() {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		return Optional.ofNullable(value);
 	}
 
 	/**
