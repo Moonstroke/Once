@@ -171,7 +171,13 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException if mapFunction is {@code null}
 	 */
 	public <R> Optional<R> map(Function<T, R> mapFunction) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (value == null) {
+			throw new IllegalStateException(name + " has not been set");
+		}
+		if (mapFunction == null) {
+			throw new NullPointerException("Cannot invoke a null function");
+		}
+		return Optional.ofNullable(mapFunction.apply(value));
 	}
 
 	/**
