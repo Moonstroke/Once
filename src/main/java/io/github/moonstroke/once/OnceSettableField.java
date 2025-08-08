@@ -62,7 +62,17 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException  if supplier is, or returns, {@code null}
 	 */
 	public void setFrom(Supplier<T> supplier) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (this.value != null) {
+			throw new IllegalStateException(name + " is already set");
+		}
+		if (supplier == null) {
+			throw new NullPointerException("Cannot invoke a null supplier");
+		}
+		T value = supplier.get();
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
+		this.value = value;
 	}
 
 	/**
@@ -98,7 +108,18 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException if supplier is, or returns, {@code null}
 	 */
 	public boolean trySetFrom(Supplier<T> supplier) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (this.value != null) {
+			return false;
+		}
+		if (supplier == null) {
+			throw new NullPointerException("Cannot invoke a null supplier");
+		}
+		T value = supplier.get();
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
+		this.value = value;
+		return true;
 	}
 
 	/**
