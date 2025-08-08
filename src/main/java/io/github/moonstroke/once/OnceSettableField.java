@@ -188,6 +188,12 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException if consumer is {@code null}
 	 */
 	public void ifSet(Consumer<T> consumer) {
-		throw new UnsupportedOperationException("not implemented"); // TODO
+		if (value == null) {
+			return;
+		}
+		if (consumer == null) {
+			throw new NullPointerException("Cannot invoke a null consumer");
+		}
+		consumer.accept(value);
 	}
 }
