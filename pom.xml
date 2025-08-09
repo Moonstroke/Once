@@ -3,8 +3,24 @@
 	<groupId>io.github.moonstroke</groupId>
 	<artifactId>once</artifactId>
 	<version>0.1-SNAPSHOT</version>
+
 	<name>Once</name>
 	<description>A simple container for fields to set only once</description>
+	<url>https://github.com/Moonstroke/Once</url>
+
+	<licenses>
+		<license>
+			<name>The MIT License</name>
+			<url>https://opensource.org/license/mit</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>${project.url}.git</url>
+		<connection>scm:git:${project.scm.url}</connection>
+		<developerConnection>${project.scm.connection}</developerConnection>
+	</scm>
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
