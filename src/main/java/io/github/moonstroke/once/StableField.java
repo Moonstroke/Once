@@ -69,10 +69,7 @@ public class StableField<T> {
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		if (!this.value.compareAndSet(null, value)) {
-			return false;
-		}
-		return true;
+		return this.value.compareAndSet(null, value);
 	}
 
 	/**
