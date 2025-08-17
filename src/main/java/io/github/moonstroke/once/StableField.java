@@ -129,15 +129,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof StableField)) {
-			return false;
-		}
-		Object otherValue = ((StableField<?>) o).value.get();
-		T value = this.value.get();
-		if (value == null) {
-			return otherValue == null;
-		}
-		return value.equals(otherValue);
+		return o instanceof StableField && Objects.equals(get(null), ((StableField<?>) o).get(null));
 	}
 
 	/**
