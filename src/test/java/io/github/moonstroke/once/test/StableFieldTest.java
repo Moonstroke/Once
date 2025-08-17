@@ -1,3 +1,5 @@
+/* SPDX-FileCopyrightText: 2025 (c) Joachim MARIE <moonstroke+github@live.fr>
+ * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once.test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
