@@ -50,10 +50,10 @@ public class StableField<T> {
 	 * @throws NullPointerException  if value is {@code null}
 	 */
 	public void set(T value) {
+		checkValueToSet(value);
 		if (this.value != null) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		checkValueToSet(value);
 		this.value = value;
 	}
 
@@ -68,10 +68,10 @@ public class StableField<T> {
 	 * @throws NullPointerException if value is {@code null}
 	 */
 	public boolean trySet(T value) {
+		checkValueToSet(value);
 		if (this.value != null) {
 			return false;
 		}
-		checkValueToSet(value);
 		this.value = value;
 		return true;
 	}
