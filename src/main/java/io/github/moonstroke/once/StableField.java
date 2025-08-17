@@ -31,6 +31,15 @@ public class StableField<T> {
 		this.name = name;
 	}
 
+	private void checkValueToSet(T value) {
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
+		if (value == this) {
+			throw new IllegalArgumentException("cannot set the value to itself");
+		}
+	}
+
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
@@ -44,12 +53,7 @@ public class StableField<T> {
 		if (this.value != null) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
-		}
+		checkValueToSet(value);
 		this.value = value;
 	}
 
@@ -67,12 +71,7 @@ public class StableField<T> {
 		if (this.value != null) {
 			return false;
 		}
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
-		}
+		checkValueToSet(value);
 		this.value = value;
 		return true;
 	}
