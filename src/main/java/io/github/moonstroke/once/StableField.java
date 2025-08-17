@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * A special container for a single value, allowing only a single initialization.
  */
-public class OnceSettableField<T> {
+public class StableField<T> {
 
 	private final String name;
 	private T value;
@@ -19,7 +19,7 @@ public class OnceSettableField<T> {
 	 * @throws NullPointerException     if name is {@code null}
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public OnceSettableField(String name) {
+	public StableField(String name) {
 		if (name == null) {
 			throw new NullPointerException("Cannot have a null name");
 		}
@@ -119,7 +119,7 @@ public class OnceSettableField<T> {
 	 * The two objects are equal if the following holds:
 	 * <ul>
 	 * <li>it is not {@code null},
-	 * <li>it is a {@code OnceSettableField} instance,
+	 * <li>it is a {@code StableField} instance,
 	 * <li>its value is unset if and this instance's value is unset, or
 	 * <li>its value is set to one that compare equal to the one set in this instance.
 	 * </ul>
@@ -130,10 +130,10 @@ public class OnceSettableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof OnceSettableField)) {
+		if (!(o instanceof StableField)) {
 			return false;
 		}
-		Object otherValue = ((OnceSettableField<?>) o).value;
+		Object otherValue = ((StableField<?>) o).value;
 		if (value == null) {
 			return otherValue == null;
 		}
