@@ -109,7 +109,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(value);
+		return Objects.hashCode(value.get());
 	}
 
 	/**
@@ -132,7 +132,8 @@ public class StableField<T> {
 		if (!(o instanceof StableField)) {
 			return false;
 		}
-		Object otherValue = ((StableField<?>) o).value;
+		Object otherValue = ((StableField<?>) o).value.get();
+		T value = this.value.get();
 		if (value == null) {
 			return otherValue == null;
 		}
@@ -149,6 +150,7 @@ public class StableField<T> {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append('(');
+		T value = this.value.get();
 		if (value == null) {
 			sb.append("not set");
 		} else {
