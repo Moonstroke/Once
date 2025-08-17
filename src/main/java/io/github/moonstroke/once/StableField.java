@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StableField<T> {
 
 	private final String name;
-	private final AtomicReference<T> value = new AtomicReference<>();
+	private final AtomicReference<T> valueRef = new AtomicReference<>();
 
 
 	/**
@@ -52,7 +52,7 @@ public class StableField<T> {
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (!this.value.compareAndSet(null, value)) {
+		if (!valueRef.compareAndSet(null, value)) {
 			throw new IllegalStateException(name + " is already set");
 		}
 	}
@@ -69,7 +69,7 @@ public class StableField<T> {
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		return this.value.compareAndSet(null, value);
+		return valueRef.compareAndSet(null, value);
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class StableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
-		T val = value.get();
-		if (val == null) {
+		T value = valueRef.get();
+		if (value == null) {
 			throw new IllegalStateException(name + " has not been set");
 		}
-		return val;
+		return value;
 	}
 
 	/**
@@ -95,11 +95,11 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		T val = value.get();
-		if (val == null) {
+		T value = valueRef.get();
+		if (value == null) {
 			return defaultValue;
 		}
-		return val;
+		return value;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(value.get());
+		return Objects.hashCode(valueRef.get());
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class StableField<T> {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append('(');
-		T value = this.value.get();
+		T value = valueRef.get();
 		if (value == null) {
 			sb.append("not set");
 		} else {
