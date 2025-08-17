@@ -3,6 +3,7 @@
 package io.github.moonstroke.once;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -10,7 +11,7 @@ import java.util.Objects;
 public class StableField<T> {
 
 	private final String name;
-	private T value;
+	private final AtomicReference<T> value = new AtomicReference<>();
 
 
 	/**
@@ -51,10 +52,9 @@ public class StableField<T> {
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (this.value != null) {
+		if (!this.value.compareAndSet(null, value)) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		this.value = value;
 	}
 
 	/**
@@ -69,10 +69,9 @@ public class StableField<T> {
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		if (this.value != null) {
+		if (!this.value.compareAndSet(null, value)) {
 			return false;
 		}
-		this.value = value;
 		return true;
 	}
 
@@ -84,10 +83,11 @@ public class StableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
-		if (value == null) {
+		T val = value.get();
+		if (val == null) {
 			throw new IllegalStateException(name + " has not been set");
 		}
-		return value;
+		return val;
 	}
 
 	/**
@@ -98,10 +98,11 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		if (value == null) {
+		T val = value.get();
+		if (val == null) {
 			return defaultValue;
 		}
-		return value;
+		return val;
 	}
 
 	/**
