@@ -29,11 +29,11 @@ Central. To use it, simply declare it as a dependency:
 
 ## Features
 
-The class provided in `StableField`, a generic container for a value that can be
-initialized only once. It defines a setter, which throws a runtime exception the
-second (and later) time it is called, a getter, which throws an exception if the
-setter has not been called beforehand, as well as non-throwing counterparts for
-both methods.
+The project provides the class `StableField`, a generic container for a value
+that can be initialized only once. It defines a setter, which throws a runtime
+exception the second (and later) time it is called, a getter, which throws an
+exception if the setter has not been called beforehand, as well as non-throwing
+counterparts for both methods.
 
 The class also overrides the `Object` methods `hashCode`, `equals` and
 `toString`. `hashCode` returns the contained object's hash code (or `0` if it
