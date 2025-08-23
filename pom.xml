@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.moonstroke</groupId>
 	<artifactId>once</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 
 	<name>Once</name>
 	<description>A simple container for fields to set only once</description>
