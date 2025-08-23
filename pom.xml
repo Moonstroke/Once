@@ -109,6 +109,12 @@
 						<goals>
 							<goal>publish</goal>
 						</goals>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+							<checksums>required</checksums>
+							<deploymentName>${project.artifactId}-${project.version}</deploymentName>
+							<outputFilename>${project.artifactId}-${project.version}.zip</outputFilename>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
