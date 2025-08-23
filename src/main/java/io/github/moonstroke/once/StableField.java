@@ -3,6 +3,7 @@
 package io.github.moonstroke.once;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -10,7 +11,7 @@ import java.util.Objects;
 public class StableField<T> {
 
 	private final String name;
-	private T value;
+	private final AtomicReference<T> valueRef = new AtomicReference<>();
 
 
 	/**
@@ -31,6 +32,15 @@ public class StableField<T> {
 		this.name = name;
 	}
 
+	private void checkValueToSet(T value) {
+		if (value == null) {
+			throw new NullPointerException("Cannot set a null value");
+		}
+		if (value == this) {
+			throw new IllegalArgumentException("cannot set the value to itself");
+		}
+	}
+
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
@@ -41,16 +51,10 @@ public class StableField<T> {
 	 * @throws NullPointerException  if value is {@code null}
 	 */
 	public void set(T value) {
-		if (this.value != null) {
+		checkValueToSet(value);
+		if (!valueRef.compareAndSet(null, value)) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
-		}
-		this.value = value;
 	}
 
 	/**
@@ -64,17 +68,8 @@ public class StableField<T> {
 	 * @throws NullPointerException if value is {@code null}
 	 */
 	public boolean trySet(T value) {
-		if (this.value != null) {
-			return false;
-		}
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
-		}
-		this.value = value;
-		return true;
+		checkValueToSet(value);
+		return valueRef.compareAndSet(null, value);
 	}
 
 	/**
@@ -85,6 +80,7 @@ public class StableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
+		T value = valueRef.get();
 		if (value == null) {
 			throw new IllegalStateException(name + " has not been set");
 		}
@@ -99,6 +95,7 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
+		T value = valueRef.get();
 		if (value == null) {
 			return defaultValue;
 		}
@@ -112,7 +109,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(value);
+		return Objects.hashCode(valueRef.get());
 	}
 
 	/**
@@ -132,14 +129,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof StableField)) {
-			return false;
-		}
-		Object otherValue = ((StableField<?>) o).value;
-		if (value == null) {
-			return otherValue == null;
-		}
-		return value.equals(otherValue);
+		return o instanceof StableField && Objects.equals(get(null), ((StableField<?>) o).get(null));
 	}
 
 	/**
@@ -152,6 +142,7 @@ public class StableField<T> {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append('(');
+		T value = valueRef.get();
 		if (value == null) {
 			sb.append("not set");
 		} else {
