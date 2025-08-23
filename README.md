@@ -41,9 +41,13 @@ not initialized); `equals` returns true iff the object compared to is also an
 instance of `StableField` and either both contained values are not initialized,
 or both values compare equal (according to their `equals` method).
 
+### Thread-safety
+
 The class is fully thread-safe: initialization of the value by one thread will
 be immediately visible to others (no race condition). Thus instances can be
 shared among threads without the need for external synchronization.
+
+### Full test coverage
 
 The class is fully covered using JUnit 5 tests, which strive to check common use
 cases as well as more obscure corner cases.
