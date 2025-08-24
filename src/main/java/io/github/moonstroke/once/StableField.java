@@ -15,6 +15,7 @@ public class StableField<T> {
 	private volatile boolean set;
 	private volatile T value;
 	private final Object lock = new Object();
+	private final List<Requirement<? super T>> requirements;
 	private final boolean allowNull;
 
 
@@ -41,6 +42,7 @@ public class StableField<T> {
 			throw new NullPointerException(name + "cannot have a null requirement");
 		}
 		allowNull = reqs.contains(Requirements.ALLOW_NULL);
+		this.requirements = reqs;
 	}
 
 	private void checkValueToSet(T value) {
@@ -50,6 +52,7 @@ public class StableField<T> {
 		if (value == this) {
 			throw new IllegalArgumentException("cannot set the value to itself");
 		}
+		// TODO check requirements
 	}
 
 	/**
