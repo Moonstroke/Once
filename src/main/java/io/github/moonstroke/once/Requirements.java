@@ -49,6 +49,7 @@ public class Requirements {
 	 * @throws NullPointerException if pattern is {@code null}
 	 */
 	public static Requirement<CharSequence> matches(Pattern pattern) {
+		Objects.requireNonNull(pattern);
 		return Requirement.fromPredicate(s -> pattern.matcher(s).matches(), "value must match the pattern " + pattern);
 	}
 
