@@ -54,7 +54,7 @@ public interface Requirement<T> {
 			throw new IllegalArgumentException("cannot throw an empty message");
 		}
 		return value -> {
-			if (predicate.test(value)) {
+			if (!predicate.test(value)) {
 				throw new IllegalArgumentException(message);
 			}
 		};
