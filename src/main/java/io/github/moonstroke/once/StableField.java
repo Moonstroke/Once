@@ -44,6 +44,10 @@ public class StableField<T> {
 		}
 		allowNull = reqs.contains(Requirements.ALLOW_NULL);
 		this.requirements = new ArrayList<>(reqs);
+		if (allowNull) {
+			/* We don't need to store this requirement */
+			this.requirements.remove(Requirements.ALLOW_NULL);
+		}
 	}
 
 	private void checkValueToSet(T value) {
