@@ -14,6 +14,7 @@ public class StableField<T> {
 	private final String name;
 	private volatile boolean set;
 	private volatile T value;
+	private final Object lock = new Object();
 	private final boolean allowNull;
 
 
@@ -66,7 +67,7 @@ public class StableField<T> {
 		if (set) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		synchronized (this) {
+		synchronized (lock) {
 			if (set) {
 				throw new IllegalStateException(name + " is already set");
 			}
@@ -91,7 +92,7 @@ public class StableField<T> {
 		if (set) {
 			return false;
 		}
-		synchronized (this) {
+		synchronized (lock) {
 			if (set) {
 				return false;
 			}
