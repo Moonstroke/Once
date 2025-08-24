@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +43,7 @@ public class StableField<T> {
 			throw new NullPointerException(name + "cannot have a null requirement");
 		}
 		allowNull = reqs.contains(Requirements.ALLOW_NULL);
-		this.requirements = reqs;
+		this.requirements = new ArrayList<>(reqs);
 	}
 
 	private void checkValueToSet(T value) {
