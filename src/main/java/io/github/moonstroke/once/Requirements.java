@@ -19,7 +19,7 @@ public class Requirements {
 
 
 	/**
-	 * A special requirement instance that alters the default behavior of class {@link OnceSettableField} by allowing
+	 * A special requirement instance that alters the default behavior of class {@link StableField} by allowing
 	 * setting the field to {@code null}.
 	 */
 	public static final Requirement<Object> ALLOW_NULL = o -> {
