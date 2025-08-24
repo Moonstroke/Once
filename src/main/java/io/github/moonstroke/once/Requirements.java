@@ -21,6 +21,10 @@ public class Requirements {
 	/**
 	 * A special requirement instance that alters the default behavior of class {@link StableField} by allowing
 	 * setting the field to {@code null}.
+	 *
+	 * When a {@code null} value is passed to a setter of a {@link StableField} instance which has been given this
+	 * requirement, all other requirements (if any) are skipped. This means that requirements are never called with a
+	 * {@code null} argument (and it would functionally make little sense anyway).
 	 */
 	public static final Requirement<Object> ALLOW_NULL = o -> {
 		/* Nothing to do; it is the presence of the object itself that matters */

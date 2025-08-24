@@ -14,7 +14,7 @@ public interface Requirement<T> {
 	/**
 	 * Perform the check that this requirement represents.
 	 *
-	 * @param value The value to check
+	 * @param value The value to check, never {@code null}
 	 *
 	 * @throws IllegalArgumentException if the value does not meet the requirement
 	 */
