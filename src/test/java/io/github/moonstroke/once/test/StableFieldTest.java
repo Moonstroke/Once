@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.moonstroke.once.Requirement;
+import io.github.moonstroke.once.Requirements;
 import io.github.moonstroke.once.StableField;
 
 class StableFieldTest {
@@ -22,6 +24,22 @@ class StableFieldTest {
 	@Test
 	void testConstructorCallEmptyNameFails() {
 		assertThrows(IllegalArgumentException.class, () -> new StableField<>(""));
+	}
+
+	@Test
+	void testConstructorCallNullRequirementsFails() {
+		assertThrows(NullPointerException.class, () -> new StableField<>("field", (Requirement<Object>[]) null));
+	}
+
+	@Test
+	void testConstructorCallNullRequirementAloneFails() {
+		assertThrows(NullPointerException.class, () -> new StableField<>("field", (Requirement<Object>) null));
+	}
+
+	@Test
+	void testConstructorCallNullRequirementAmongOthersFails() {
+		assertThrows(NullPointerException.class,
+		             () -> new StableField<>("field", Requirements.POSITIVE, null, Requirements.ALLOW_NULL));
 	}
 
 	@Test
