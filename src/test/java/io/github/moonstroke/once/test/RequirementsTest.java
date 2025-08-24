@@ -24,6 +24,19 @@ class RequirementsTest {
 	}
 
 	@Test
+	void testRequirementsAllowNullDoesNotAllowSetTwice() {
+		StableField<Object> sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
+		sf.set(null);
+		assertThrows(IllegalStateException.class, () -> sf.set(null));
+	}
+
+	@Test
+	void testRequirementsAllowNullDoesNotAllowSetZeroTimesBeforeGet() {
+		StableField<Object> sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
+		assertThrows(IllegalStateException.class, sf::get);
+	}
+
+	@Test
 	void testRequirementsStringNotEmptyRejectsEmptyString() {
 		StableField<String> sf = new StableField<>("field", Requirements.STRING_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> sf.set(""));
