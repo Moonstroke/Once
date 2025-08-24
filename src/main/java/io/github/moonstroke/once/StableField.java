@@ -58,7 +58,8 @@ public class StableField<T> {
 	 *
 	 * @throws IllegalStateException if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException  if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
@@ -75,7 +76,8 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
