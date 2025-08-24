@@ -3,6 +3,7 @@
 package io.github.moonstroke.once;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -13,6 +14,7 @@ public class StableField<T> {
 
 	private final String name;
 	private final AtomicReference<T> valueRef = new AtomicReference<>();
+	private final boolean allowNull;
 
 
 	/**
@@ -33,9 +35,11 @@ public class StableField<T> {
 			throw new IllegalArgumentException("Cannot have an empty name");
 		}
 		this.name = name;
-		if (Arrays.asList(requirements).contains(null)) {
+		List<Requirement<? super T>> reqs = Arrays.asList(requirements);
+		if (reqs.contains(null)) {
 			throw new NullPointerException(name + "cannot have a null requirement");
 		}
+		allowNull = reqs.contains(Requirements.ALLOW_NULL);
 	}
 
 	private void checkValueToSet(T value) {
