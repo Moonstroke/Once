@@ -46,14 +46,17 @@ public class StableField<T> {
 	}
 
 	private void checkValueToSet(T value) {
-		if (value == null && !allowNull) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		if (value == this) {
+		if (value == null) {
+			if (!allowNull) {
+				throw new NullPointerException("Cannot set a null value");
+			}
+			/* Requirements ae not applicable to a null value */
+		} else if (value == this) {
 			throw new IllegalArgumentException("cannot set the value to itself");
-		}
-		for (Requirement<? super T> r : requirements) {
-			r.check(value);
+		} else {
+			for (Requirement<? super T> r : requirements) {
+				r.check(value);
+			}
 		}
 	}
 
