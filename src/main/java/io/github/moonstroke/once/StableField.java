@@ -5,7 +5,6 @@ package io.github.moonstroke.once;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -13,7 +12,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StableField<T> {
 
 	private final String name;
-	private final AtomicReference<T> valueRef = new AtomicReference<>();
+	private volatile boolean set;
+	private volatile T value;
 	private final boolean allowNull;
 
 
@@ -63,8 +63,15 @@ public class StableField<T> {
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (!valueRef.compareAndSet(null, value)) {
+		if (set) {
 			throw new IllegalStateException(name + " is already set");
+		}
+		synchronized (this) {
+			if (set) {
+				throw new IllegalStateException(name + " is already set");
+			}
+			this.value = value;
+			set = true;
 		}
 	}
 
@@ -81,7 +88,17 @@ public class StableField<T> {
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		return valueRef.compareAndSet(null, value);
+		if (set) {
+			return false;
+		}
+		synchronized (this) {
+			if (set) {
+				return false;
+			}
+			this.value = value;
+			set = true;
+		}
+		return true;
 	}
 
 	/**
@@ -92,8 +109,7 @@ public class StableField<T> {
 	 * @throws IllegalStateException if the value was not initialized
 	 */
 	public T get() {
-		T value = valueRef.get();
-		if (value == null) {
+		if (!set) {
 			throw new IllegalStateException(name + " has not been set");
 		}
 		return value;
@@ -107,11 +123,7 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		T value = valueRef.get();
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
+		return set ? value : defaultValue;
 	}
 
 	/**
@@ -121,7 +133,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(valueRef.get());
+		return Objects.hashCode(value);
 	}
 
 	/**
@@ -141,7 +153,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof StableField && Objects.equals(get(null), ((StableField<?>) o).get(null));
+		return o instanceof StableField && Objects.equals(value, ((StableField<?>) o).value);
 	}
 
 	/**
@@ -154,8 +166,7 @@ public class StableField<T> {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append('(');
-		T value = valueRef.get();
-		if (value == null) {
+		if (!set) {
 			sb.append("not set");
 		} else {
 			sb.append(value.toString());
