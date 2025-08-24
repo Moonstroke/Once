@@ -141,6 +141,11 @@ public class StableField<T> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
+		sb.append(' ');
+		sb.append('"');
+		sb.append(name);
+		sb.append('"');
+		sb.append(' ');
 		sb.append('(');
 		T value = valueRef.get();
 		if (value == null) {
