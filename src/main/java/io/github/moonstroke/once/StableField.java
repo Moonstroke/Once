@@ -34,10 +34,10 @@ public class StableField<T> {
 
 	private void checkValueToSet(T value) {
 		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
+			throw new NullPointerException(name + "cannot bet set to null");
 		}
 		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
+			throw new IllegalArgumentException(name + "cannot be set to itself");
 		}
 	}
 
