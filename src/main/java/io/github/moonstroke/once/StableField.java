@@ -43,7 +43,7 @@ public class StableField<T> {
 	}
 
 	private void checkValueToSet(T value) {
-		if (value == null) {
+		if (value == null && !allowNull) {
 			throw new NullPointerException("Cannot set a null value");
 		}
 		if (value == this) {
