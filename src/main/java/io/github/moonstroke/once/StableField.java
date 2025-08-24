@@ -10,7 +10,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class StableField<T> {
 
+	/* The name of the field. Used in error messages and toString representation */
 	private final String name;
+	/* Thread-safe reference to the contained value */
 	private final AtomicReference<T> valueRef = new AtomicReference<>();
 
 
@@ -32,6 +34,8 @@ public class StableField<T> {
 		this.name = name;
 	}
 
+	/* Ensure that the given value is eligible for being contained by this instance. Does not check whether this
+	 * instance already contains a value. */
 	private void checkValueToSet(T value) {
 		if (value == null) {
 			throw new NullPointerException(name + "cannot bet set to null");
@@ -46,9 +50,9 @@ public class StableField<T> {
 	 *
 	 * @param value The value to set
 	 *
-	 * @throws IllegalStateException if the value has already been initialized
+	 * @throws IllegalStateException    if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException  if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null}
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
@@ -65,7 +69,7 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null}
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
