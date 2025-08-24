@@ -76,7 +76,7 @@ class RequirementsTest {
 	void testRequirementsMatchesPatternRejectsNonMatchingString() {
 		StableField<String> sf = new StableField<>("field",
 		                                                         Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
-		assertDoesNotThrow(() -> sf.set("foobar"));
+		assertThrows(IllegalArgumentException.class, () -> sf.set("foobar"));
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsMatchesStringRejectsNonMatchingString() {
 		StableField<String> sf = new StableField<>("field", Requirements.matches("a+b"));
-		assertDoesNotThrow(() -> sf.set("aaa"));
+		assertThrows(IllegalArgumentException.class, () -> sf.set("aaa"));
 	}
 
 	@Test
@@ -273,7 +273,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsPositiveRejectsZeroFloat() {
 		StableField<Float> sf = new StableField<>("field", Requirements.POSITIVE);
-		assertDoesNotThrow(() -> sf.set(0F));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(0F));
 	}
 
 	@Test
@@ -290,7 +290,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeByteRejectsByteBelowRange() {
 		StableField<Byte> sf = new StableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
-		assertDoesNotThrow(() -> sf.set((byte) 0));
+		assertThrows(IllegalArgumentException.class, () -> sf.set((byte) 0));
 	}
 
 	@Test
@@ -314,7 +314,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeByteRejectsByteAboveRange() {
 		StableField<Byte> sf = new StableField<>("field", Requirements.inRange((byte) 1, (byte) 5));
-		assertDoesNotThrow(() -> sf.set((byte) 7));
+		assertThrows(IllegalArgumentException.class, () -> sf.set((byte) 7));
 	}
 
 	@Test
@@ -325,7 +325,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeShortRejectsShortBelowRange() {
 		StableField<Short> sf = new StableField<>("field", Requirements.inRange((short) 1, (short) 5));
-		assertDoesNotThrow(() -> sf.set((short) 0));
+		assertThrows(IllegalArgumentException.class, () -> sf.set((short) 0));
 	}
 
 	@Test
@@ -349,7 +349,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeShortRejectsShortAboveRange() {
 		StableField<Short> sf = new StableField<>("field", Requirements.inRange((short) 1, (short) 5));
-		assertDoesNotThrow(() -> sf.set((short) 7));
+		assertThrows(IllegalArgumentException.class, () -> sf.set((short) 7));
 	}
 
 	@Test
@@ -360,7 +360,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeIntRejectsIntBelowRange() {
 		StableField<Integer> sf = new StableField<>("field", Requirements.inRange(1, 5));
-		assertDoesNotThrow(() -> sf.set(0));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(0));
 	}
 
 	@Test
@@ -384,7 +384,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeIntRejectsIntAboveRange() {
 		StableField<Integer> sf = new StableField<>("field", Requirements.inRange(1, 5));
-		assertDoesNotThrow(() -> sf.set(7));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(7));
 	}
 
 	@Test
@@ -395,7 +395,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeLongRejectsLongBelowRange() {
 		StableField<Long> sf = new StableField<>("field", Requirements.inRange(1L, 5L));
-		assertDoesNotThrow(() -> sf.set(0L));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(0L));
 	}
 
 	@Test
@@ -419,7 +419,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeLongRejectsLongAboveRange() {
 		StableField<Long> sf = new StableField<>("field", Requirements.inRange(1L, 5L));
-		assertDoesNotThrow(() -> sf.set(7L));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(7L));
 	}
 
 	@Test
@@ -430,7 +430,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeFloatRejectsFloatBelowRange() {
 		StableField<Float> sf = new StableField<>("field", Requirements.inRange(1.25F, 1.75F));
-		assertDoesNotThrow(() -> sf.set(1F));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(1F));
 	}
 
 	@Test
@@ -454,7 +454,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeFloatRejectsFloatAboveRange() {
 		StableField<Float> sf = new StableField<>("field", Requirements.inRange(1.25F, 1.75F));
-		assertDoesNotThrow(() -> sf.set(2F));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(2F));
 	}
 
 	@Test
@@ -465,7 +465,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeDoubleRejectsDoubleBelowRange() {
 		StableField<Double> sf = new StableField<>("field", Requirements.inRange(1.25, 1.75));
-		assertDoesNotThrow(() -> sf.set(1D));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(1D));
 	}
 
 	@Test
@@ -489,6 +489,6 @@ class RequirementsTest {
 	@Test
 	void testRequirementsInRangeDoubleRejectsDoubleAboveRange() {
 		StableField<Double> sf = new StableField<>("field", Requirements.inRange(1.25, 1.75));
-		assertDoesNotThrow(() -> sf.set(2D));
+		assertThrows(IllegalArgumentException.class, () -> sf.set(2D));
 	}
 }
