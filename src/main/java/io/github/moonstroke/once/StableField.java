@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,6 +33,9 @@ public class StableField<T> {
 			throw new IllegalArgumentException("Cannot have an empty name");
 		}
 		this.name = name;
+		if (Arrays.asList(requirements).contains(null)) {
+			throw new NullPointerException(name + "cannot have a null requirement");
+		}
 	}
 
 	private void checkValueToSet(T value) {
