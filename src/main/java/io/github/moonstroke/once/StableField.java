@@ -52,7 +52,9 @@ public class StableField<T> {
 		if (value == this) {
 			throw new IllegalArgumentException("cannot set the value to itself");
 		}
-		// TODO check requirements
+		for (Requirement<? super T> r : requirements) {
+			r.check(value);
+		}
 	}
 
 	/**
