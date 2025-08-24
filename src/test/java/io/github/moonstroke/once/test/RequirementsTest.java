@@ -67,15 +67,13 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsMatchesPatternAcceptsMatchingString() {
-		StableField<String> sf = new StableField<>("field",
-		                                                         Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
+		StableField<String> sf = new StableField<>("field", Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
 		assertDoesNotThrow(() -> sf.set("foobaz"));
 	}
 
 	@Test
 	void testRequirementsMatchesPatternRejectsNonMatchingString() {
-		StableField<String> sf = new StableField<>("field",
-		                                                         Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
+		StableField<String> sf = new StableField<>("field", Requirements.matches(Pattern.compile("foo(?:bar)?baz")));
 		assertThrows(IllegalArgumentException.class, () -> sf.set("foobar"));
 	}
 
@@ -122,29 +120,25 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptyList() {
-		StableField<Collection<Object>> sf = new StableField<>("field",
-		                                                                     Requirements.COLLECTION_NOT_EMPTY);
+		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptyList()));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyAcceptsNonEmptyList() {
-		StableField<Collection<Object>> sf = new StableField<>("field",
-		                                                                     Requirements.COLLECTION_NOT_EMPTY);
+		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
 		assertDoesNotThrow(() -> sf.set(Collections.singletonList(new Object())));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
-		StableField<Collection<Object>> sf = new StableField<>("field",
-		                                                                     Requirements.COLLECTION_NOT_EMPTY);
+		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
 		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptySet()));
 	}
 
 	@Test
 	void testRequirementsCollectionNotEmptyAcceptsNonEmptySet() {
-		StableField<Collection<Object>> sf = new StableField<>("field",
-		                                                                     Requirements.COLLECTION_NOT_EMPTY);
+		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
 		assertDoesNotThrow(() -> sf.set(Collections.singleton(new Object())));
 	}
 
@@ -216,8 +210,7 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsFloatNotNanFiniteAcceptRegularFloat() {
-		StableField<Float> sf = new StableField<>("field", Requirements.FLOAT_NOT_NAN,
-		                                                        Requirements.FLOAT_FINITE);
+		StableField<Float> sf = new StableField<>("field", Requirements.FLOAT_NOT_NAN, Requirements.FLOAT_FINITE);
 		assertDoesNotThrow(() -> sf.set(42F));
 	}
 
@@ -241,8 +234,7 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsDoubleNotNanFiniteAcceptRegularDouble() {
-		StableField<Double> sf = new StableField<>("field", Requirements.DOUBLE_NOT_NAN,
-		                                                         Requirements.DOUBLE_FINITE);
+		StableField<Double> sf = new StableField<>("field", Requirements.DOUBLE_NOT_NAN, Requirements.DOUBLE_FINITE);
 		assertDoesNotThrow(() -> sf.set(42D));
 	}
 
