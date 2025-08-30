@@ -149,6 +149,11 @@ public class Requirements {
 	                                                                             "value must be positive");
 
 
+	/* Compose an error message for the numeric range of given bounds */
+	private static <T extends Number> String getOutOfRangeErrorMessage(T min, T max) {
+		return "value must be between " + min + " and " + max + " inclusive";
+	}
+
 	/**
 	 * Require that a byte value be in a specified range.
 	 *
@@ -163,10 +168,8 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(b -> min <= b && b <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(b -> min <= b && b <= max, getOutOfRangeErrorMessage(min, max));
 	}
-
 
 	/**
 	 * Require that a short integer be in a specified range.
@@ -182,10 +185,8 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(s -> min <= s && s <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(s -> min <= s && s <= max, getOutOfRangeErrorMessage(min, max));
 	}
-
 
 	/**
 	 * Require that an integral number be in a specified range.
@@ -201,10 +202,8 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(i -> min <= i && i <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(i -> min <= i && i <= max, getOutOfRangeErrorMessage(min, max));
 	}
-
 
 	/**
 	 * Require that a long integer be in a specified range.
@@ -220,8 +219,7 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(l -> min <= l && l <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(l -> min <= l && l <= max, getOutOfRangeErrorMessage(min, max));
 	}
 
 	/**
@@ -238,8 +236,7 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(f -> min <= f && f <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(f -> min <= f && f <= max, getOutOfRangeErrorMessage(min, max));
 	}
 
 	/**
@@ -257,7 +254,6 @@ public class Requirements {
 		if (min > max) {
 			throw new IllegalArgumentException("invalid range: " + min + " > " + max);
 		}
-		return Requirement.fromPredicate(d -> min <= d && d <= max,
-		                                 "value must be between " + min + " and " + max + " inclusive");
+		return Requirement.fromPredicate(d -> min <= d && d <= max, getOutOfRangeErrorMessage(min, max));
 	}
 }
