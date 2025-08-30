@@ -97,7 +97,8 @@ class RequirementsTest {
 	@Test
 	void testRequirementsListNotEmptyRejectsEmptyList() {
 		StableField<List<Object>> sf = new StableField<>("field", Requirements.LIST_NOT_EMPTY);
-		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptyList()));
+		List<Object> emptyList = Collections.emptyList();
+		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyList));
 	}
 
 	@Test
@@ -109,7 +110,8 @@ class RequirementsTest {
 	@Test
 	void testRequirementsSetNotEmptyRejectsEmptySet() {
 		StableField<Set<Object>> sf = new StableField<>("field", Requirements.SET_NOT_EMPTY);
-		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptySet()));
+		Set<Object> emptySet = Collections.emptySet();
+		assertThrows(IllegalArgumentException.class, () -> sf.set(emptySet));
 	}
 
 	@Test
@@ -121,7 +123,8 @@ class RequirementsTest {
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptyList() {
 		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
-		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptyList()));
+		List<Object> emptyCollection = Collections.emptyList();
+		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyCollection));
 	}
 
 	@Test
@@ -133,7 +136,8 @@ class RequirementsTest {
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
 		StableField<Collection<Object>> sf = new StableField<>("field", Requirements.COLLECTION_NOT_EMPTY);
-		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptySet()));
+		Set<Object> emptyCollection = Collections.emptySet();
+		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyCollection));
 	}
 
 	@Test
@@ -145,7 +149,8 @@ class RequirementsTest {
 	@Test
 	void testRequirementsMapNotEmptyRejectsEmptyMap() {
 		StableField<Map<Object, Object>> sf = new StableField<>("field", Requirements.MAP_NOT_EMPTY);
-		assertThrows(IllegalArgumentException.class, () -> sf.set(Collections.emptyMap()));
+		Map<Object, Object> emptyMap = Collections.emptyMap();
+		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyMap));
 	}
 
 	@Test
