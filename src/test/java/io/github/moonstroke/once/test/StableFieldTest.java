@@ -79,7 +79,7 @@ class StableFieldTest {
 	@Test
 	void testCallToGetWithoutSetFails() {
 		StableField<Object> sf = new StableField<>("field");
-		assertThrows(IllegalStateException.class, () -> sf.get());
+		assertThrows(IllegalStateException.class, sf::get);
 	}
 
 	@Test
