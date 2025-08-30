@@ -107,9 +107,9 @@ public class StableField<T> {
 	}
 
 	/**
-	 * Return a hash code of the value, if set; otherwise, return {@code 0}.
+	 * Return a numeric sum of the object's state, comprising its name and value.
 	 *
-	 * @return the hash code of the instance's value if set, or {@code 0} if it is not set
+	 * @return a hash of the instance's name and value members
 	 */
 	@Override
 	public int hashCode() {
@@ -123,8 +123,12 @@ public class StableField<T> {
 	 * <ul>
 	 * <li>it is not {@code null},
 	 * <li>it is a {@code StableField} instance,
-	 * <li>its value is unset if and this instance's value is unset, or
+	 * <li>its {@linkplain #name name member} is equal to this object's name,
+	 * <li>and either:
+	 * <ul>
+	 * <li>its value is unset and this instance's value is unset, or
 	 * <li>its value is set to one that compare equal to the one set in this instance.
+	 * </ul>
 	 * </ul>
 	 *
 	 * @param o The object to compare
