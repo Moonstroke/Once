@@ -113,7 +113,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(valueRef.get());
+		return Objects.hash(name, valueRef.get());
 	}
 
 	/**
@@ -133,7 +133,11 @@ public class StableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof StableField && Objects.equals(get(null), ((StableField<?>) o).get(null));
+		if (!(o instanceof StableField)) {
+			return false;
+		}
+		StableField<?> other = (StableField<?>) o;
+		return name.equals(other.name) && Objects.equals(get(null), ((StableField<?>) o).get(null));
 	}
 
 	/**
