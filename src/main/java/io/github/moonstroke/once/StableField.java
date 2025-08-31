@@ -55,7 +55,7 @@ public class StableField<T> {
 			if (!allowNull) {
 				throw new NullPointerException("Cannot set a null value");
 			}
-			/* Requirements ae not applicable to a null value */
+			/* Do not iterate over requirements: they do not apply to a null value */
 		} else if (value == this) {
 			throw new IllegalArgumentException("cannot set the value to itself");
 		} else {
