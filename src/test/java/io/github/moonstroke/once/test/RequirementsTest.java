@@ -160,14 +160,14 @@ class RequirementsTest {
 	}
 
 	@Test
-	void testRequirementsCharNotZeroRejectsZeroChar() {
-		StableField<Character> sf = new StableField<>("field", Requirements.CHAR_NOT_ZERO);
+	void testRequirementsCharNotNulRejectsNulChar() {
+		StableField<Character> sf = new StableField<>("field", Requirements.CHAR_NOT_NUL);
 		assertThrows(IllegalArgumentException.class, () -> sf.set('\0'));
 	}
 
 	@Test
-	void testRequirementsCharNotZeroAcceptsNonZeroChar() {
-		StableField<Character> sf = new StableField<>("field", Requirements.CHAR_NOT_ZERO);
+	void testRequirementsCharNotNulAcceptsNonNulChar() {
+		StableField<Character> sf = new StableField<>("field", Requirements.CHAR_NOT_NUL);
 		assertDoesNotThrow(() -> sf.set('*'));
 	}
 

@@ -102,8 +102,8 @@ public class Requirements {
 	/**
 	 * Require that a character be nonzero.
 	 */
-	public static final Requirement<Character> CHAR_NOT_ZERO = Requirement.fromPredicate(c -> c != '\0',
-	                                                                                     "value cannot be zero");
+	public static final Requirement<Character> CHAR_NOT_NUL = Requirement.fromPredicate(c -> c != '\0',
+	                                                                                    "value cannot be the NUL character");
 
 	/**
 	 * Require that a number be nonzero.
