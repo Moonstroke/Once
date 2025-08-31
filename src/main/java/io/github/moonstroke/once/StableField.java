@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -10,7 +11,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class StableField<T> {
 
+	/* The name of the field. Used in error messages and toString representation */
 	private final String name;
+	/* Thread-safe reference to the contained value */
 	private final AtomicReference<T> valueRef = new AtomicReference<>();
 
 
@@ -32,12 +35,14 @@ public class StableField<T> {
 		this.name = name;
 	}
 
+	/* Ensure that the given value is eligible for being contained by this instance. Does not check whether this
+	 * instance already contains a value. */
 	private void checkValueToSet(T value) {
 		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
+			throw new NullPointerException(name + "cannot bet set to null");
 		}
 		if (value == this) {
-			throw new IllegalArgumentException("cannot set the value to itself");
+			throw new IllegalArgumentException(name + "cannot be set to itself");
 		}
 	}
 
@@ -46,9 +51,9 @@ public class StableField<T> {
 	 *
 	 * @param value The value to set
 	 *
-	 * @throws IllegalStateException if the value has already been initialized
+	 * @throws IllegalStateException    if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException  if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null}
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
@@ -65,7 +70,7 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException if value is {@code null}
+	 * @throws NullPointerException     if value is {@code null}
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
@@ -77,12 +82,12 @@ public class StableField<T> {
 	 *
 	 * @return the value set
 	 *
-	 * @throws IllegalStateException if the value was not initialized
+	 * @throws NoSuchElementException if the value was not initialized
 	 */
 	public T get() {
 		T value = valueRef.get();
 		if (value == null) {
-			throw new IllegalStateException(name + " has not been set");
+			throw new NoSuchElementException(name + " has not been set");
 		}
 		return value;
 	}
@@ -103,13 +108,13 @@ public class StableField<T> {
 	}
 
 	/**
-	 * Return a hash code of the value, if set; otherwise, return {@code 0}.
+	 * Return a numeric sum of the object's state, comprising its name and value.
 	 *
-	 * @return the hash code of the instance's value if set, or {@code 0} if it is not set
+	 * @return a hash of the instance's name and value members
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(valueRef.get());
+		return Objects.hash(name, valueRef.get());
 	}
 
 	/**
@@ -119,8 +124,12 @@ public class StableField<T> {
 	 * <ul>
 	 * <li>it is not {@code null},
 	 * <li>it is a {@code StableField} instance,
-	 * <li>its value is unset if and this instance's value is unset, or
+	 * <li>its {@linkplain #name name member} is equal to this object's name,
+	 * <li>and either:
+	 * <ul>
+	 * <li>its value is unset and this instance's value is unset, or
 	 * <li>its value is set to one that compare equal to the one set in this instance.
+	 * </ul>
 	 * </ul>
 	 *
 	 * @param o The object to compare
@@ -129,7 +138,11 @@ public class StableField<T> {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof StableField && Objects.equals(get(null), ((StableField<?>) o).get(null));
+		if (!(o instanceof StableField)) {
+			return false;
+		}
+		StableField<?> other = (StableField<?>) o;
+		return name.equals(other.name) && Objects.equals(get(null), ((StableField<?>) o).get(null));
 	}
 
 	/**
@@ -141,6 +154,11 @@ public class StableField<T> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
+		sb.append(' ');
+		sb.append('"');
+		sb.append(name);
+		sb.append('"');
+		sb.append(' ');
 		sb.append('(');
 		T value = valueRef.get();
 		if (value == null) {

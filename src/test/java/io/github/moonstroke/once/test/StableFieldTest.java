@@ -5,8 +5,11 @@ package io.github.moonstroke.once.test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Test;
 
@@ -79,7 +82,7 @@ class StableFieldTest {
 	@Test
 	void testCallToGetWithoutSetFails() {
 		StableField<Object> sf = new StableField<>("field");
-		assertThrows(IllegalStateException.class, () -> sf.get());
+		assertThrows(NoSuchElementException.class, sf::get);
 	}
 
 	@Test
@@ -139,20 +142,41 @@ class StableFieldTest {
 	}
 
 	@Test
-	void testEqualsUnsetInstReturnsTrueWhenUnset() {
+	void testEqualsUnsetInstReturnsTrueWhenUnsetSameName() {
 		StableField<Object> sf = new StableField<>("field");
-		assertTrue(sf.equals(new StableField<>("other")));
+		assertTrue(sf.equals(new StableField<>("field")));
 	}
 
 	@Test
-	void testEqualsUnsetInstReturnsFalseWhenSet() {
+	void testEqualsUnsetInstReturnsFalseWhenUnsetDifferentName() {
+		StableField<Object> sf = new StableField<>("field");
+		assertFalse(sf.equals(new StableField<>("other")));
+	}
+
+	@Test
+	void testEqualsUnsetInstReturnsFalseWhenSetSameName() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertFalse(sf.equals(new StableField<>("field")));
+	}
+
+	@Test
+	void testEqualsUnsetInstReturnsFalseWhenSetDifferentName() {
 		StableField<Object> sf = new StableField<>("field");
 		sf.set(new Object());
 		assertFalse(sf.equals(new StableField<>("other")));
 	}
 
 	@Test
-	void testEqualsSetInstReturnsFalseWhenUnset() {
+	void testEqualsSetInstReturnsFalseWhenUnsetSameName() {
+		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> other = new StableField<>("field");
+		other.set(new Object());
+		assertFalse(sf.equals(other));
+	}
+
+	@Test
+	void testEqualsSetInstReturnsFalseWhenUnsetDifferentName() {
 		StableField<Object> sf = new StableField<>("field");
 		StableField<Object> other = new StableField<>("other");
 		other.set(new Object());
@@ -160,17 +184,36 @@ class StableFieldTest {
 	}
 
 	@Test
-	void testEqualsInstSetSameValueReturnsTrue() {
+	void testEqualsInstSetSameValueSameNameReturnsTrue() {
 		StableField<Object> sf = new StableField<>("field");
 		Object value = new Object();
 		sf.set(value);
-		StableField<Object> other = new StableField<>("other");
+		StableField<Object> other = new StableField<>("field");
 		other.set(value);
 		assertTrue(sf.equals(other));
 	}
 
 	@Test
-	void testEqualsInstSetOtherValueReturnsFalse() {
+	void testEqualsInstSetSameValueDifferetnNameReturnsFalse() {
+		StableField<Object> sf = new StableField<>("field");
+		Object value = new Object();
+		sf.set(value);
+		StableField<Object> other = new StableField<>("other");
+		other.set(value);
+		assertFalse(sf.equals(other));
+	}
+
+	@Test
+	void testEqualsInstSetOtherValueSameNameReturnsFalse() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		StableField<Object> other = new StableField<>("field");
+		other.set(new Object());
+		assertFalse(sf.equals(other));
+	}
+
+	@Test
+	void testEqualsInstSetOtherValueDifferentNameReturnsFalse() {
 		StableField<Object> sf = new StableField<>("field");
 		sf.set(new Object());
 		StableField<Object> other = new StableField<>("other");
@@ -179,22 +222,29 @@ class StableFieldTest {
 	}
 
 	@Test
-	void testHashCodeReturnsZeroIfNotSet() {
+	void testHashCodeReturnsNonZeroIfNotSet() {
 		StableField<Object> sf = new StableField<>("field");
-		assertEquals(0, sf.hashCode());
+		assertNotEquals(0, sf.hashCode());
 	}
 
 	@Test
-	void testHashCodeReturnsValueHashCodeIfSet() {
+	void testHashCodeReturnsNonZeroIfSet() {
 		StableField<Object> sf = new StableField<>("field");
 		Object value = new Object();
 		sf.set(value);
-		assertEquals(value.hashCode(), sf.hashCode());
+		assertNotEquals(0, sf.hashCode());
 	}
 
 	@Test
 	void testToStringSucceedsWhenUnset() {
 		StableField<Object> sf = new StableField<>("field");
+		assertDoesNotThrow(sf::toString);
+	}
+
+	@Test
+	void testToStringSucceedsWhenSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
 		assertDoesNotThrow(sf::toString);
 	}
 }
