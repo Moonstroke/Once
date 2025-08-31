@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +71,39 @@ class StableFieldTest {
 	}
 
 	@Test
+	void testSetCalledInParallelSucceedsOnce() {
+		StableField<Object> sf = new StableField<>("field");
+		int[] successesCountPtr = new int[] {0};
+		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
+		 * (assuming the compiler does not merge them) */
+		Thread thread1 = new Thread(() -> {
+			try {
+				sf.set(new Object());
+				successesCountPtr[0]++;
+			} catch (IllegalStateException e) {
+				/* Ignore */
+			}
+		});
+		Thread thread2 = new Thread(() -> {
+			try {
+				sf.set(new Object());
+				successesCountPtr[0]++;
+			} catch (IllegalStateException e) {
+				/* Ignore */
+			}
+		});
+		thread1.start();
+		thread2.start();
+		try {
+			thread1.join();
+			thread2.join();
+		} catch (InterruptedException e) {
+			fail(e);
+		}
+		assertEquals(1, successesCountPtr[0]);
+	}
+
+	@Test
 	void testCallToTrySetNullFails() {
 		StableField<Object> sf = new StableField<>("field");
 		assertThrows(NullPointerException.class, () -> sf.trySet(null));
@@ -85,6 +119,33 @@ class StableFieldTest {
 	void testTrySetReturnsTrueWhenDidSet() {
 		StableField<Object> sf = new StableField<>("field");
 		assertTrue(sf.trySet(new Object()));
+	}
+
+	@Test
+	void testTrySetCalledInParallelSucceedsOnce() {
+		StableField<Object> sf = new StableField<>("field");
+		int[] successesCountPtr = new int[] {0};
+		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
+		 * (assuming the compiler does not merge them) */
+		Thread thread1 = new Thread(() -> {
+			if (sf.trySet(new Object())) {
+				successesCountPtr[0]++;
+			}
+		});
+		Thread thread2 = new Thread(() -> {
+			if (sf.trySet(new Object())) {
+				successesCountPtr[0]++;
+			}
+		});
+		thread1.start();
+		thread2.start();
+		try {
+			thread1.join();
+			thread2.join();
+		} catch (InterruptedException e) {
+			fail(e);
+		}
+		assertEquals(1, successesCountPtr[0]);
 	}
 
 	@Test
