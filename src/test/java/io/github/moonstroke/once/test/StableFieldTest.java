@@ -197,4 +197,11 @@ class StableFieldTest {
 		StableField<Object> sf = new StableField<>("field");
 		assertDoesNotThrow(sf::toString);
 	}
+
+	@Test
+	void testToStringSucceedsWhenSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertDoesNotThrow(sf::toString);
+	}
 }
