@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -81,12 +82,12 @@ public class StableField<T> {
 	 *
 	 * @return the value set
 	 *
-	 * @throws IllegalStateException if the value was not initialized
+	 * @throws NoSuchElementException if the value was not initialized
 	 */
 	public T get() {
 		T value = valueRef.get();
 		if (value == null) {
-			throw new IllegalStateException(name + " has not been set");
+			throw new NoSuchElementException(name + " has not been set");
 		}
 		return value;
 	}
