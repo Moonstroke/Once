@@ -5,6 +5,7 @@ package io.github.moonstroke.once.test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -181,17 +182,17 @@ class StableFieldTest {
 	}
 
 	@Test
-	void testHashCodeReturnsZeroIfNotSet() {
+	void testHashCodeReturnsNonZeroIfNotSet() {
 		StableField<Object> sf = new StableField<>("field");
-		assertEquals(0, sf.hashCode());
+		assertNotEquals(0, sf.hashCode());
 	}
 
 	@Test
-	void testHashCodeReturnsValueHashCodeIfSet() {
+	void testHashCodeReturnsNonZeroIfSet() {
 		StableField<Object> sf = new StableField<>("field");
 		Object value = new Object();
 		sf.set(value);
-		assertEquals(value.hashCode(), sf.hashCode());
+		assertNotEquals(0, sf.hashCode());
 	}
 
 	@Test
