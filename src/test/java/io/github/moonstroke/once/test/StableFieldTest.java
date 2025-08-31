@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.NoSuchElementException;
+
 import org.junit.jupiter.api.Test;
 
 import io.github.moonstroke.once.StableField;
@@ -79,7 +81,7 @@ class StableFieldTest {
 	@Test
 	void testCallToGetWithoutSetFails() {
 		StableField<Object> sf = new StableField<>("field");
-		assertThrows(IllegalStateException.class, sf::get);
+		assertThrows(NoSuchElementException.class, sf::get);
 	}
 
 	@Test
