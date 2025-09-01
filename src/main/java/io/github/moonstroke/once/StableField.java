@@ -2,9 +2,11 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -13,19 +15,24 @@ public class StableField<T> {
 
 	/* The name of the field. Used in error messages and toString representation */
 	private final String name;
-	/* Thread-safe reference to the contained value */
-	private final AtomicReference<T> valueRef = new AtomicReference<>();
+	private volatile boolean set;
+	private volatile T value;
+	private final Object lock = new Object();
+	private final List<Requirement<? super T>> requirements;
+	private final boolean allowNull;
 
 
 	/**
 	 * Create a field of given name that can only be set once.
 	 *
 	 * @param name The name of the field
+	 * @param requirements The requirements that the value must meet before being set
 	 *
-	 * @throws NullPointerException     if name is {@code null}
+	 * @throws NullPointerException     if any parameter is {@code null}
 	 * @throws IllegalArgumentException if name is empty
 	 */
-	public StableField(String name) {
+	@SafeVarargs
+	public StableField(String name, Requirement<? super T>... requirements) {
 		if (name == null) {
 			throw new NullPointerException("Cannot have a null name");
 		}
@@ -33,16 +40,32 @@ public class StableField<T> {
 			throw new IllegalArgumentException("Cannot have an empty name");
 		}
 		this.name = name;
+		List<Requirement<? super T>> reqs = Arrays.asList(requirements);
+		if (reqs.contains(null)) {
+			throw new NullPointerException(name + "cannot have a null requirement");
+		}
+		allowNull = reqs.contains(Requirements.ALLOW_NULL);
+		this.requirements = new ArrayList<>(reqs);
+		if (allowNull) {
+			/* We don't need to store this requirement */
+			this.requirements.remove(Requirements.ALLOW_NULL);
+		}
 	}
 
 	/* Ensure that the given value is eligible for being contained by this instance. Does not check whether this
 	 * instance already contains a value. */
 	private void checkValueToSet(T value) {
 		if (value == null) {
-			throw new NullPointerException(name + "cannot bet set to null");
-		}
-		if (value == this) {
+			if (!allowNull) {
+				throw new NullPointerException(name + "cannot bet set to null");
+			}
+			/* Do not iterate over requirements: they do not apply to a null value */
+		} else if (value == this) {
 			throw new IllegalArgumentException(name + "cannot be set to itself");
+		} else {
+			for (Requirement<? super T> r : requirements) {
+				r.check(value);
+			}
 		}
 	}
 
@@ -53,12 +76,20 @@ public class StableField<T> {
 	 *
 	 * @throws IllegalStateException    if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException     if value is {@code null}
-	 */
+=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
+=	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (!valueRef.compareAndSet(null, value)) {
+		if (set) {
 			throw new IllegalStateException(name + " is already set");
+		}
+		synchronized (lock) {
+			if (set) {
+				throw new IllegalStateException(name + " is already set");
+			}
+			this.value = value;
+			set = true;
 		}
 	}
 
@@ -70,11 +101,22 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-	 * @throws NullPointerException     if value is {@code null}
-	 */
+=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
+=	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		return valueRef.compareAndSet(null, value);
+		if (set) {
+			return false;
+		}
+		synchronized (lock) {
+			if (set) {
+				return false;
+			}
+			this.value = value;
+			set = true;
+		}
+		return true;
 	}
 
 	/**
@@ -85,8 +127,7 @@ public class StableField<T> {
 	 * @throws NoSuchElementException if the value was not initialized
 	 */
 	public T get() {
-		T value = valueRef.get();
-		if (value == null) {
+		if (!set) {
 			throw new NoSuchElementException(name + " has not been set");
 		}
 		return value;
@@ -100,11 +141,7 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		T value = valueRef.get();
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
+		return set ? value : defaultValue;
 	}
 
 	/**
@@ -114,7 +151,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, valueRef.get());
+		return Objects.hash(name, value);
 	}
 
 	/**
@@ -142,7 +179,7 @@ public class StableField<T> {
 			return false;
 		}
 		StableField<?> other = (StableField<?>) o;
-		return name.equals(other.name) && Objects.equals(get(null), ((StableField<?>) o).get(null));
+		return name.equals(other.name) && Objects.equals(value, ((StableField<?>) o).value);
 	}
 
 	/**
@@ -160,8 +197,7 @@ public class StableField<T> {
 		sb.append('"');
 		sb.append(' ');
 		sb.append('(');
-		T value = valueRef.get();
-		if (value == null) {
+		if (!set) {
 			sb.append("not set");
 		} else {
 			sb.append(value.toString());
