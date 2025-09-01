@@ -72,8 +72,15 @@ shared among threads without the need for external synchronization.
 
 ### Full test coverage
 
-The class is fully covered using JUnit 5 tests, which strive to check common use
+The class is fully[^1] covered using JUnit 5 tests, which strive to check common use
 cases as well as more obscure corner cases.
 
 
+[^1]: Almost.  The coverage for `StableField` setter methods using the
+double-check locking pattern is not total, as synchronization is inherently
+difficult to cover systematically. There is a way to cover the methods using
+synchronization, explained [here][2], but it involves making a `private` field
+`public`, and because of this it will not be made part of the repository.
+
 [1]: https://download.java.net/java/early_access/jdk25/docs/api/java.base/java/lang/StableValue.html "Official documentation for StableValue"
+[2]: https://github.com/Moonstroke/Once/commit/42e94d9bbc147b1a037bb94f27ebf6ae5121bc86
