@@ -60,6 +60,11 @@ applicable to the standard types (primitives, strings, collections): emptiness
 range (for numeric types), not being the `NUL` character, matching a regular
 expression (for character sequences).
 
+A special constant defined in this class lifts a requirement, instead of adding
+one: it is an indicator that the field is nullable, meaning that its presence
+instructs the setters to accept a `null` as value (instead of throwing a
+`NullPointerException` as they normally do).
+
 This mechanism will allow to define functional rules right at the same place
 where the container is defined, allowing to improve the centralization of a
 project's business logic.
