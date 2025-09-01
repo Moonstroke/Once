@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -33,7 +34,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsAllowNullDoesNotAllowSetZeroTimesBeforeGet() {
 		StableField<Object> sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
-		assertThrows(IllegalStateException.class, sf::get);
+		assertThrows(NoSuchElementException.class, sf::get);
 	}
 
 	@Test
