@@ -36,10 +36,11 @@ exception if the setter has not been called beforehand, as well as non-throwing
 counterparts for both methods.
 
 The class also overrides the `Object` methods `hashCode`, `equals` and
-`toString`. `hashCode` returns the contained object's hash code (or `0` if it
-not initialized); `equals` returns true iff the object compared to is also an
-instance of `StableField` and either both contained values are not initialized,
-or both values compare equal (according to their `equals` method).
+`toString`. `hashCode` returns a numeric value based on the field's name and the
+contained value, if initialized; `equals` returns true iff the object compared
+to is also an instance of `StableField`, its name is the same as the object
+compared against, and either both contained values are not initialized, or both
+values compare equal (according to their `equals` method).
 
 ### `Requirement`s
 
