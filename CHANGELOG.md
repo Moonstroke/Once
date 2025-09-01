@@ -3,6 +3,26 @@
 
 # Changelog
 
+## (2025/09/01) version 0.2
+
+### New feature: requirements
+
+The functional interface `Requirement` is added. It represents a business rule
+that a candidate value to a setter must satisfy in order to be successfully set.
+A stable field's requirements are defined at creation time: the constructor
+accepts a variable number of them (including none).
+The helper class `Requirements` provides a set of useful, base requirements on
+primitive types, strings and collections.
+
+### Minor changes
+
+- The getter method without a default value now throws `NoSuchElementException`
+  instead of `IllegalStateException` when the value has not been set. This
+  conforms to the behavior of standard classes (e.g. `Optional`).
+- The member name is now taken into account in methods `hashCode` and `equals`.
+  This means that the former never returns `0`, and the latter only returns
+  `true` when the argument is a `StableField` instance with the same name, and
+  an equal value (or both unset).
 
 ## (2025/08/24) version 0.1
 
