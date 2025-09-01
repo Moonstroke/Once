@@ -41,6 +41,29 @@ not initialized); `equals` returns true iff the object compared to is also an
 instance of `StableField` and either both contained values are not initialized,
 or both values compare equal (according to their `equals` method).
 
+### `Requirement`s
+
+The `StableField` constructor accepts a dynamic number of *requirements* that a
+value passed to any setter must satisfy in order to be successfully assigned.
+These are implementations of a new functional interface: `Requirement`, whose
+`check` method by contract accepts the candidate value and throws an
+`IlleglArgumentException` if the value does not meet the criterion that the
+instance represents.
+
+A couple of helper static methods is defined in the interface to convert a
+`Predicate` object into a requirement (with either a custom or default exception
+message).
+
+The static class `Requirements` provides a set of useful requirement instances
+applicable to the standard types (primitives, strings, collections): emptiness
+(for strings and collections), having a specific sign, or falling in a given
+range (for numeric types), not being the `NUL` character, matching a regular
+expression (for character sequences).
+
+This mechanism will allow to define functional rules right at the same place
+where the container is defined, allowing to improve the centralization of a
+project's business logic.
+
 ### Thread-safety
 
 The class is fully thread-safe: initialization of the value by one thread will
