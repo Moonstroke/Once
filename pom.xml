@@ -1,10 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: 2025 (c) Joachim MARIE <moonstroke+github@live.fr>
+     SPDX-License-Identifier: MIT -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.moonstroke</groupId>
 	<artifactId>once</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2</version>
+
 	<name>Once</name>
 	<description>A simple container for fields to set only once</description>
+	<url>https://github.com/Moonstroke/Once</url>
+	<inceptionYear>2025</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>The MIT License</name>
+			<url>https://opensource.org/license/mit</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Joachim MARIE</name>
+			<url>https://github.com/Moonstroke</url>
+			<email>moonstroke+github@live.fr</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>${project.url}.git</url>
+		<connection>scm:git:${project.scm.url}</connection>
+		<developerConnection>${project.scm.connection}</developerConnection>
+	</scm>
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
@@ -19,4 +47,77 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.11.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.2.8</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<bestPractices>true</bestPractices>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.1.4</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>publish</goal>
+						</goals>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+							<checksums>required</checksums>
+							<deploymentName>${project.artifactId}-${project.version}</deploymentName>
+							<outputFilename>${project.artifactId}-${project.version}.zip</outputFilename>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
