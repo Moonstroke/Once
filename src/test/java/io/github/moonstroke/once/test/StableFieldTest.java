@@ -107,57 +107,6 @@ class StableFieldTest {
 	}
 
 	@Test
-	void testSetFromNullSupplierFails() {
-		StableField<Object> sf = new StableField<>("field");
-		assertThrows(NullPointerException.class, () -> sf.setFrom(null));
-	}
-
-	@Test
-	void testSetFromSupplierReturnsNullFails() {
-		StableField<Object> sf = new StableField<>("field");
-		assertThrows(NullPointerException.class, () -> sf.setFrom(() -> null));
-	}
-
-	@Test
-	void testSetFromNonNullSupplierSucceeds() {
-		StableField<Object> sf = new StableField<>("field");
-		assertDoesNotThrow(() -> sf.setFrom(Object::new));
-	}
-
-	@Test
-	void testSetFromInvokesSupplier() {
-		StableField<Object> sf = new StableField<>("field");
-		boolean[] called = new boolean[1];
-		assertDoesNotThrow(() -> sf.setFrom(() -> {
-			called[0] = true;
-			return new Object();
-		}));
-		assertTrue(called[0]);
-	}
-
-	@Test
-	void testSetFromSetsSuppliedValue() {
-		StableField<Object> sf = new StableField<>("field");
-		Object value = new Object();
-		assertDoesNotThrow(() -> sf.setFrom(() -> value));
-		assertEquals(value, sf.get());
-	}
-
-	@Test
-	void testSetFromFailsIfAlreadySet() {
-		StableField<Object> sf = new StableField<>("field");
-		sf.set(new Object());
-		assertThrows(IllegalStateException.class, () -> sf.setFrom(Object::new));
-	}
-
-	@Test
-	void testSetFromDoesNotInvokeSupplierIfAlreadySet() {
-		StableField<Object> sf = new StableField<>("field");
-		sf.set(new Object());
-		assertThrows(IllegalStateException.class, () -> sf.setFrom(() -> fail("supplier should not have been called")));
-	}
-
-	@Test
 	void testTrySetNullValueFails() {
 		StableField<Object> sf = new StableField<>("field");
 		assertThrows(NullPointerException.class, () -> sf.trySet(null));
@@ -207,57 +156,6 @@ class StableFieldTest {
 		StableField<Object> sf = new StableField<>("field");
 		sf.set(new Object());
 		assertFalse(sf.trySet(new Object()));
-	}
-
-	@Test
-	void testTrySetFromNullSupplierFails() {
-		StableField<Object> sf = new StableField<>("field");
-		assertThrows(NullPointerException.class, () -> sf.trySetFrom(null));
-	}
-
-	@Test
-	void testTrySetFromSupplierReturnsNullFails() {
-		StableField<Object> sf = new StableField<>("field");
-		assertThrows(NullPointerException.class, () -> sf.trySetFrom(() -> null));
-	}
-
-	@Test
-	void testTrySetFromNonNullSupplierSucceeds() {
-		StableField<Object> sf = new StableField<>("field");
-		assertTrue(sf.trySetFrom(Object::new));
-	}
-
-	@Test
-	void testTrySetFromInvokesSupplier() {
-		StableField<Object> sf = new StableField<>("field");
-		boolean[] called = new boolean[1];
-		assertTrue(sf.trySetFrom(() -> {
-			called[0] = true;
-			return new Object();
-		}));
-		assertTrue(called[0]);
-	}
-
-	@Test
-	void testTrySetFromSetsSuppliedValue() {
-		StableField<Object> sf = new StableField<>("field");
-		Object value = new Object();
-		assertTrue(sf.trySetFrom(() -> value));
-		assertEquals(value, sf.get());
-	}
-
-	@Test
-	void testTrySetFromReturnsFalseIfAlreadySet() {
-		StableField<Object> sf = new StableField<>("field");
-		sf.set(new Object());
-		assertFalse(sf.trySetFrom(Object::new));
-	}
-
-	@Test
-	void testTrySetFromDoesNotInvokeSupplierIfAlreadySet() {
-		StableField<Object> sf = new StableField<>("field");
-		sf.set(new Object());
-		assertFalse(sf.trySetFrom(() -> fail("supplier should not have been called")));
 	}
 
 	@Test

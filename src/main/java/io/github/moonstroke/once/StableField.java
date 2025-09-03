@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -98,31 +97,6 @@ public class StableField<T> {
 	}
 
 	/**
-	 * Initialize the instance's value using the specified supplier function.
-	 *
-	 * The supplier function will only be invoked if the value is not set yet, so this method can be convenient for
-	 * cases where the computation of the value is expensive, as it can avoid the cost if not necessary.
-	 *
-	 * @param supplier The function providing the value to set
-	 *
-	 * @throws IllegalStateException if the value has already been initialized
-	 * @throws NullPointerException  if supplier is, or returns, {@code null}
-	 */
-	public void setFrom(Supplier<T> supplier) {
-		if (this.value != null) {
-			throw new IllegalStateException(name + " is already set");
-		}
-		if (supplier == null) {
-			throw new NullPointerException("Cannot invoke a null supplier");
-		}
-		T value = supplier.get();
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		this.value = value;
-	}
-
-	/**
 	 * Initialize the instance's value and return whether the operation succeeded.
 	 *
 	 * @param value The value to set
@@ -145,33 +119,6 @@ public class StableField<T> {
 			this.value = value;
 			set = true;
 		}
-		return true;
-	}
-
-	/**
-	 * Initialize the instance's value using the specified supplier function and return whether the operation succeeded.
-	 *
-	 * The supplier function will only be invoked if the value is not set yet, so this method can be convenient for
-	 * cases where the computation of the value is expensive, as it can avoid the cost if not necessary.
-	 *
-	 * @param supplier The function providing the value to set
-	 *
-	 * @return {@code true} if the value was actually set, {@code false} if it was already set
-	 *
-	 * @throws NullPointerException if supplier is, or returns, {@code null}
-	 */
-	public boolean trySetFrom(Supplier<T> supplier) {
-		if (set) {
-			return false;
-		}
-		if (supplier == null) {
-			throw new NullPointerException("Cannot invoke a null supplier");
-		}
-		T value = supplier.get();
-		if (value == null) {
-			throw new NullPointerException("Cannot set a null value");
-		}
-		this.value = value;
 		return true;
 	}
 
