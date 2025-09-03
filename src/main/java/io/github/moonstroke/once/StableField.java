@@ -162,7 +162,8 @@ public class StableField<T> {
 	 * @param <R>         The output type of the transformation function
 	 * @param mapFunction The transformation function
 	 *
-	 * @return an {@link Optional} containing the transformed value, or an empty one if the function returned {@code null}
+	 * @return an {@link Optional} containing the transformed value, or an empty one if the function returned
+	 *         {@code null}
 	 *
 	 * @throws NoSuchElementException if the value was not initialized
 	 * @throws NullPointerException   if mapFunction is {@code null}
