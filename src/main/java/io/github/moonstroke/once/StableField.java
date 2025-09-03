@@ -167,6 +167,13 @@ public class StableField<T> {
 	 *
 	 * @throws NoSuchElementException if the value was not initialized
 	 * @throws NullPointerException   if mapFunction is {@code null}
+	 *
+	 * @apiNote It is deliberate that the function throw an error if the field is unset. It was deemed better than the
+	 *          alternatives of passing {@code null} to the function (thereby allowing to simplify the latter by
+	 *          removing the need for a {@code null}-check) or returning an empty optional without calling the function
+	 *          (which would have made an empty optional return ambiguous). If a non-throwing alternative is required,
+	 *          users may instead call the method {@link #getOpt} followed by {@link Optional#map} with the same
+	 *          function as its parameter.
 	 */
 	public <R> Optional<R> map(Function<T, R> mapFunction) {
 		if (mapFunction == null) {
