@@ -177,7 +177,7 @@ public class StableField<T> {
 	 */
 	public <R> Optional<R> map(Function<T, R> mapFunction) {
 		if (mapFunction == null) {
-			throw new NullPointerException("Cannot invoke a null function");
+			throw new NullPointerException(name + " cannot be passed to a null function");
 		}
 		if (!set) {
 			throw new NoSuchElementException(name + " has not been set");
@@ -194,7 +194,7 @@ public class StableField<T> {
 	 */
 	public void ifSet(Consumer<T> consumer) {
 		if (consumer == null) {
-			throw new NullPointerException("Cannot invoke a null consumer");
+			throw new NullPointerException(name + " cannot be passed to a null consumer");
 		}
 		if (set) {
 			consumer.accept(value);
