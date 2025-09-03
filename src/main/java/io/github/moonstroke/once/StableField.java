@@ -169,11 +169,11 @@ public class StableField<T> {
 	 * @throws NullPointerException   if mapFunction is {@code null}
 	 */
 	public <R> Optional<R> map(Function<T, R> mapFunction) {
-		if (!set) {
-			throw new NoSuchElementException(name + " has not been set");
-		}
 		if (mapFunction == null) {
 			throw new NullPointerException("Cannot invoke a null function");
+		}
+		if (!set) {
+			throw new NoSuchElementException(name + " has not been set");
 		}
 		return Optional.ofNullable(mapFunction.apply(value));
 	}
@@ -186,13 +186,12 @@ public class StableField<T> {
 	 * @throws NullPointerException if consumer is {@code null}
 	 */
 	public void ifSet(Consumer<T> consumer) {
-		if (!set) {
-			return;
-		}
 		if (consumer == null) {
 			throw new NullPointerException("Cannot invoke a null consumer");
 		}
-		consumer.accept(value);
+		if (set) {
+			consumer.accept(value);
+		}
 	}
 
 	/**
