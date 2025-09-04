@@ -99,15 +99,15 @@ public class StableField<T> {
 =	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (set) {
+		if (isSet()) {
 			throw new IllegalStateException(name + " is already set");
 		}
 		synchronized (lock) {
-			if (set) {
+			if (isSet()) {
 				throw new IllegalStateException(name + " is already set");
 			}
-			this.value = value;
-			set = true;
+			setValue(value);
+			markSet();
 		}
 	}
 
@@ -124,15 +124,15 @@ public class StableField<T> {
 =	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		if (set) {
+		if (isSet()) {
 			return false;
 		}
 		synchronized (lock) {
-			if (set) {
+			if (isSet()) {
 				return false;
 			}
-			this.value = value;
-			set = true;
+			setValue(value);
+			markSet();
 		}
 		return true;
 	}
@@ -145,10 +145,10 @@ public class StableField<T> {
 	 * @throws NoSuchElementException if the value was not initialized
 	 */
 	public T get() {
-		if (!set) {
+		if (!isSet()) {
 			throw new NoSuchElementException(name + " has not been set");
 		}
-		return value;
+		return getValue();
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		return set ? value : defaultValue;
+		return isSet() ? getValue() : defaultValue;
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, value);
+		return Objects.hash(name, getValue());
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class StableField<T> {
 			return false;
 		}
 		StableField<?> other = (StableField<?>) o;
-		return name.equals(other.name) && Objects.equals(value, ((StableField<?>) o).value);
+		return name.equals(other.name) && Objects.equals(getValue(), ((StableField<?>) o).getValue());
 	}
 
 	/**
@@ -215,10 +215,10 @@ public class StableField<T> {
 		sb.append('"');
 		sb.append(' ');
 		sb.append('(');
-		if (!set) {
+		if (!isSet()) {
 			sb.append("not set");
 		} else {
-			sb.append(value.toString());
+			sb.append(getValue().toString());
 		}
 		sb.append(')');
 		return sb.toString();
