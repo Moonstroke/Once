@@ -100,10 +100,10 @@ public class StableField<T> {
 	public void set(T value) {
 		checkValueToSet(value);
 		checkSet();
-		doSetValue(value);
+		doSet(value);
 	}
 
-	protected void doSetValue(T value) {
+	protected void doSet(T value) {
 		setValue(value);
 	}
 
@@ -123,10 +123,10 @@ public class StableField<T> {
 		if (isSet()) {
 			return false;
 		}
-		return doTrySetValue(value);
+		return doTrySet(value);
 	}
 
-	protected boolean doTrySetValue(T value) {
+	protected boolean doTrySet(T value) {
 		setValue(value);
 		return true;
 	}

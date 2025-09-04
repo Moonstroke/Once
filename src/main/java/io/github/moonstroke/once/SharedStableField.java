@@ -21,14 +21,14 @@ public class SharedStableField<T> extends StableField<T> {
 		super(name, requirements);
 	}
 
-	protected void doSetValue(T value) {
+	protected void doSet(T value) {
 		synchronized (lock) {
 			checkSet();
 			setValue(value);
 		}
 	}
 
-	protected boolean doTrySetValue(T value) {
+	protected boolean doTrySet(T value) {
 		synchronized (lock) {
 			if (isSet()) {
 				return false;
