@@ -102,6 +102,10 @@ public class StableField<T> {
 		if (isSet()) {
 			throw new IllegalStateException(name + " is already set");
 		}
+		doSetValue(value);
+	}
+
+	protected void doSetValue(T value) {
 		synchronized (lock) {
 			if (isSet()) {
 				throw new IllegalStateException(name + " is already set");
@@ -127,6 +131,10 @@ public class StableField<T> {
 		if (isSet()) {
 			return false;
 		}
+		return doTrySetValue(value);
+	}
+
+	protected boolean doTrySetValue(T value) {
 		synchronized (lock) {
 			if (isSet()) {
 				return false;
