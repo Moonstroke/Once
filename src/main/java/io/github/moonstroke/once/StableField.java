@@ -25,7 +25,7 @@ public class StableField<T> {
 	/**
 	 * Create a field of given name that can only be set once.
 	 *
-	 * @param name The name of the field
+	 * @param name         The name of the field
 	 * @param requirements The requirements that the value must meet before being set
 	 *
 	 * @throws NullPointerException     if any parameter is {@code null}
@@ -76,9 +76,9 @@ public class StableField<T> {
 	 *
 	 * @throws IllegalStateException    if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
 	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
-=	 */
+	 */
 	public void set(T value) {
 		checkValueToSet(value);
 		if (set) {
@@ -101,9 +101,9 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
 	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
-=	 */
+	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
 		if (set) {
