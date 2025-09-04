@@ -71,6 +71,7 @@ public class StableField<T> {
 
 	protected void setValue(T value) {
 		this.value = value;
+		this.set = true;
 	}
 
 	protected T getValue() {
@@ -79,12 +80,6 @@ public class StableField<T> {
 
 	protected boolean isSet() {
 		return set;
-	}
-
-	/* A method named setSet would be outrageous. Luckily, the flag will only ever be set to true, so a typical setter
-	 * is unnecessary */
-	protected void markSet() {
-		this.set = true;
 	}
 
 	/**
@@ -111,7 +106,6 @@ public class StableField<T> {
 				throw new IllegalStateException(name + " is already set");
 			}
 			setValue(value);
-			markSet();
 		}
 	}
 
@@ -140,7 +134,6 @@ public class StableField<T> {
 				return false;
 			}
 			setValue(value);
-			markSet();
 		}
 		return true;
 	}
