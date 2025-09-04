@@ -69,6 +69,24 @@ public class StableField<T> {
 		}
 	}
 
+	protected void setValue(T value) {
+		this.value = value;
+	}
+
+	protected T getValue() {
+		return value;
+	}
+
+	protected boolean isSet() {
+		return set;
+	}
+
+	/* A method named setSet would be outrageous. Luckily, the flag will only ever be set to true, so a typical setter
+	 * is unnecessary */
+	protected void markSet() {
+		this.set = true;
+	}
+
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
