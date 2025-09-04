@@ -17,7 +17,6 @@ public class StableField<T> {
 	private final String name;
 	private volatile boolean set;
 	private volatile T value;
-	private final Object lock = new Object();
 	private final List<Requirement<? super T>> requirements;
 	private final boolean allowNull;
 
@@ -105,10 +104,7 @@ public class StableField<T> {
 	}
 
 	protected void doSetValue(T value) {
-		synchronized (lock) {
-			checkSet();
-			setValue(value);
-		}
+		setValue(value);
 	}
 
 	/**
@@ -131,12 +127,7 @@ public class StableField<T> {
 	}
 
 	protected boolean doTrySetValue(T value) {
-		synchronized (lock) {
-			if (isSet()) {
-				return false;
-			}
-			setValue(value);
-		}
+		setValue(value);
 		return true;
 	}
 

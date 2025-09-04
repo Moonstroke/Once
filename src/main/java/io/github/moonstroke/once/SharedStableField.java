@@ -8,6 +8,9 @@ package io.github.moonstroke.once;
  */
 public class SharedStableField<T> extends StableField<T> {
 
+	private final Object lock = new Object();
+
+
 	/**
 	 * Create a field of given name that can only be set once, fit for concurrent access.
 	 * 
@@ -18,4 +21,20 @@ public class SharedStableField<T> extends StableField<T> {
 		super(name, requirements);
 	}
 
+	protected void doSetValue(T value) {
+		synchronized (lock) {
+			checkSet();
+			setValue(value);
+		}
+	}
+
+	protected boolean doTrySetValue(T value) {
+		synchronized (lock) {
+			if (isSet()) {
+				return false;
+			}
+			setValue(value);
+		}
+		return true;
+	}
 }
