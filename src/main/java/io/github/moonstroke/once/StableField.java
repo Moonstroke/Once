@@ -82,6 +82,12 @@ public class StableField<T> {
 		return set;
 	}
 
+	protected void checkSet() {
+		if (isSet()) {
+			throw new IllegalStateException(name + " is already set");
+		}
+	}
+
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
@@ -94,17 +100,13 @@ public class StableField<T> {
 =	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (isSet()) {
-			throw new IllegalStateException(name + " is already set");
-		}
+		checkSet();
 		doSetValue(value);
 	}
 
 	protected void doSetValue(T value) {
 		synchronized (lock) {
-			if (isSet()) {
-				throw new IllegalStateException(name + " is already set");
-			}
+			checkSet();
 			setValue(value);
 		}
 	}
