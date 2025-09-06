@@ -12,6 +12,7 @@ import io.github.moonstroke.once.SharedStableField;
 
 class SharedStableFieldTest extends StableFieldTest {
 
+	@Override
 	protected <T> StableField<T> getTestInstance(String name) {
 		return new SharedStableField<>(name);
 	}

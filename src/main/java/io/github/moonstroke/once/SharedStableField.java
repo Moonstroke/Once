@@ -38,14 +38,17 @@ public class SharedStableField<T> extends StableField<T> {
 		super(name, requirements);
 	}
 
+	@Override
 	protected T getValue() {
 		return (T) VALUE.getVolatile(this);
 	}
 
+	@Override
 	protected boolean isSet() {
 		return (boolean) SET.getVolatile(this);
 	}
 
+	@Override
 	protected void doSet(T value) {
 		synchronized (lock) {
 			if (isSet()) {
@@ -56,6 +59,7 @@ public class SharedStableField<T> extends StableField<T> {
 		}
 	}
 
+	@Override
 	protected boolean doTrySet(T value) {
 		synchronized (lock) {
 			if (isSet()) {
