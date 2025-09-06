@@ -68,11 +68,6 @@ public class StableField<T> {
 		}
 	}
 
-	protected void setValue(T value) {
-		this.value = value;
-		this.set = true;
-	}
-
 	protected T getValue() {
 		return value;
 	}
@@ -104,7 +99,8 @@ public class StableField<T> {
 	}
 
 	protected void doSet(T value) {
-		setValue(value);
+		this.value = value;
+		this.set = true;
 	}
 
 	/**
@@ -127,7 +123,8 @@ public class StableField<T> {
 	}
 
 	protected boolean doTrySet(T value) {
-		setValue(value);
+		this.value = value;
+		this.set = true;
 		return true;
 	}
 

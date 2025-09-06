@@ -38,11 +38,6 @@ public class SharedStableField<T> extends StableField<T> {
 		super(name, requirements);
 	}
 
-	protected void setValue(T value) {
-		VALUE.setVolatile(this, value);
-		SET.setVolatile(this, true);
-	}
-
 	protected T getValue() {
 		return (T) VALUE.getVolatile(this);
 	}
@@ -54,7 +49,8 @@ public class SharedStableField<T> extends StableField<T> {
 	protected void doSet(T value) {
 		synchronized (lock) {
 			checkSet();
-			setValue(value);
+			VALUE.setVolatile(this, value);
+			SET.setVolatile(this, true);
 		}
 	}
 
@@ -63,7 +59,8 @@ public class SharedStableField<T> extends StableField<T> {
 			if (isSet()) {
 				return false;
 			}
-			setValue(value);
+			VALUE.setVolatile(this, value);
+			SET.setVolatile(this, true);
 		}
 		return true;
 	}
