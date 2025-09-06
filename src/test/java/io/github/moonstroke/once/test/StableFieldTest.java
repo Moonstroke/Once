@@ -20,6 +20,15 @@ import io.github.moonstroke.once.StableField;
 
 class StableFieldTest {
 
+	protected <T> StableField<T> getTestInstance(String name) {
+		return new StableField<>(name);
+	}
+
+	private <T> StableField<T> getTestInstance() {
+		return getTestInstance("field");
+	}
+
+
 	@Test
 	void testConstructorCallNullNameFails() {
 		assertThrows(NullPointerException.class, () -> new StableField<>(null));
@@ -48,14 +57,14 @@ class StableFieldTest {
 
 	@Test
 	void testFirstCallToSetDoesNotFail() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		assertDoesNotThrow(() -> sf.set(value));
 	}
 
 	@Test
 	void testSecondCallToSetFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
 		assertThrows(IllegalStateException.class, () -> sf.set(value));
@@ -63,19 +72,19 @@ class StableFieldTest {
 
 	@Test
 	void testCallToSetNullFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertThrows(NullPointerException.class, () -> sf.set(null));
 	}
 
 	@Test
 	void testCallToSetSelfFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(sf));
 	}
 
 	@Test
 	void testSetCalledInParallelSucceedsOnce() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		int[] successesCountPtr = new int[] {0};
 		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
 		 * (assuming the compiler does not merge them) */
@@ -108,25 +117,25 @@ class StableFieldTest {
 
 	@Test
 	void testCallToTrySetNullFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertThrows(NullPointerException.class, () -> sf.trySet(null));
 	}
 
 	@Test
 	void testCallToTrySetSelfFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertThrows(IllegalArgumentException.class, () -> sf.trySet(sf));
 	}
 
 	@Test
 	void testTrySetReturnsTrueWhenDidSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertTrue(sf.trySet(new Object()));
 	}
 
 	@Test
 	void testTrySetCalledInParallelSucceedsOnce() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		int[] successesCountPtr = new int[] {0};
 		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
 		 * (assuming the compiler does not merge them) */
@@ -153,20 +162,20 @@ class StableFieldTest {
 
 	@Test
 	void testTrySetReturnsTrueWhenDidNotSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
 		assertFalse(sf.trySet(new Object()));
 	}
 
 	@Test
 	void testCallToGetWithoutSetFails() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertThrows(NoSuchElementException.class, sf::get);
 	}
 
 	@Test
 	void testCallToGetAfterSetDoesNotFail() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
 		assertDoesNotThrow(() -> sf.get());
@@ -174,7 +183,7 @@ class StableFieldTest {
 
 	@Test
 	void testGetReturnsValuePassedToSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
 		assertEquals(value, sf.get());
@@ -182,13 +191,13 @@ class StableFieldTest {
 
 	@Test
 	void testGetDefaultAcceptsNull() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertDoesNotThrow(() -> sf.get(null));
 	}
 
 	@Test
 	void testGetDefaultReturnsStoredValueIfSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object(), defaultValue = new Object();
 		sf.set(value);
 		assertEquals(value, sf.get(defaultValue));
@@ -196,119 +205,119 @@ class StableFieldTest {
 
 	@Test
 	void testGetDefaultReturnsDefaultValueIfNotSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object defaultValue = new Object();
 		assertEquals(defaultValue, sf.get(defaultValue));
 	}
 
 	@Test
 	void testEqualsNullReturnsFalseWhenUnset() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertFalse(sf.equals(null));
 	}
 
 	@Test
 	void testEqualsNullReturnsFalseWhenSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
 		assertFalse(sf.equals(null));
 	}
 
 	@Test
 	void testEqualsSelfReturnsTrue() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertTrue(sf.equals(sf));
 	}
 
 	@Test
 	void testEqualsUnsetInstReturnsTrueWhenUnsetSameName() {
-		StableField<Object> sf = new StableField<>("field");
-		assertTrue(sf.equals(new StableField<>("field")));
+		StableField<Object> sf = getTestInstance();
+		assertTrue(sf.equals(getTestInstance()));
 	}
 
 	@Test
 	void testEqualsUnsetInstReturnsFalseWhenUnsetDifferentName() {
-		StableField<Object> sf = new StableField<>("field");
-		assertFalse(sf.equals(new StableField<>("other")));
+		StableField<Object> sf = getTestInstance();
+		assertFalse(sf.equals(getTestInstance("other")));
 	}
 
 	@Test
 	void testEqualsUnsetInstReturnsFalseWhenSetSameName() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
-		assertFalse(sf.equals(new StableField<>("field")));
+		assertFalse(sf.equals(getTestInstance()));
 	}
 
 	@Test
 	void testEqualsUnsetInstReturnsFalseWhenSetDifferentName() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
-		assertFalse(sf.equals(new StableField<>("other")));
+		assertFalse(sf.equals(getTestInstance("other")));
 	}
 
 	@Test
 	void testEqualsSetInstReturnsFalseWhenUnsetSameName() {
-		StableField<Object> sf = new StableField<>("field");
-		StableField<Object> other = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
+		StableField<Object> other = getTestInstance();
 		other.set(new Object());
 		assertFalse(sf.equals(other));
 	}
 
 	@Test
 	void testEqualsSetInstReturnsFalseWhenUnsetDifferentName() {
-		StableField<Object> sf = new StableField<>("field");
-		StableField<Object> other = new StableField<>("other");
+		StableField<Object> sf = getTestInstance();
+		StableField<Object> other = getTestInstance("other");
 		other.set(new Object());
 		assertFalse(sf.equals(other));
 	}
 
 	@Test
 	void testEqualsInstSetSameValueSameNameReturnsTrue() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
-		StableField<Object> other = new StableField<>("field");
+		StableField<Object> other = getTestInstance();
 		other.set(value);
 		assertTrue(sf.equals(other));
 	}
 
 	@Test
 	void testEqualsInstSetSameValueDifferetnNameReturnsFalse() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
-		StableField<Object> other = new StableField<>("other");
+		StableField<Object> other = getTestInstance("other");
 		other.set(value);
 		assertFalse(sf.equals(other));
 	}
 
 	@Test
 	void testEqualsInstSetOtherValueSameNameReturnsFalse() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
-		StableField<Object> other = new StableField<>("field");
+		StableField<Object> other = getTestInstance();
 		other.set(new Object());
 		assertFalse(sf.equals(other));
 	}
 
 	@Test
 	void testEqualsInstSetOtherValueDifferentNameReturnsFalse() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
-		StableField<Object> other = new StableField<>("other");
+		StableField<Object> other = getTestInstance("other");
 		other.set(new Object());
 		assertFalse(sf.equals(other));
 	}
 
 	@Test
 	void testHashCodeReturnsNonZeroIfNotSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertNotEquals(0, sf.hashCode());
 	}
 
 	@Test
 	void testHashCodeReturnsNonZeroIfSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		Object value = new Object();
 		sf.set(value);
 		assertNotEquals(0, sf.hashCode());
@@ -316,13 +325,13 @@ class StableFieldTest {
 
 	@Test
 	void testToStringSucceedsWhenUnset() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		assertDoesNotThrow(sf::toString);
 	}
 
 	@Test
 	void testToStringSucceedsWhenSet() {
-		StableField<Object> sf = new StableField<>("field");
+		StableField<Object> sf = getTestInstance();
 		sf.set(new Object());
 		assertDoesNotThrow(sf::toString);
 	}
