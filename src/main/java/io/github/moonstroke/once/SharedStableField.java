@@ -2,11 +2,28 @@
  * SPDX-License-Identifier: MIT */
 package io.github.moonstroke.once;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+
 /**
  * A special container for a single value allowing only a single initialization, safe for concurrent manipulation by
  * multiple execution threads.
  */
 public class SharedStableField<T> extends StableField<T> {
+
+	private static final VarHandle SET;
+	private static final VarHandle VALUE;
+
+	static {
+		try {
+			MethodHandles.Lookup lookup = MethodHandles.lookup();
+			SET = lookup.findVarHandle(StableField.class, "set", boolean.class);
+			VALUE = lookup.findVarHandle(StableField.class, "value", Object.class);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
 
 	private final Object lock = new Object();
 
