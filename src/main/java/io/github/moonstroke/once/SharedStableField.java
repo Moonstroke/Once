@@ -51,22 +51,22 @@ public class SharedStableField<T> extends StableField<T> {
 	@Override
 	protected void doSet(T value) {
 		synchronized (lock) {
-			if (isSet()) {
+			if ((boolean) SET.getOpaque(this)) {
 				throw new IllegalStateException(name + " is already set");
 			}
-			VALUE.setVolatile(this, value);
-			SET.setVolatile(this, true);
+			VALUE.setOpaque(this, value);
+			SET.setOpaque(this, true);
 		}
 	}
 
 	@Override
 	protected boolean doTrySet(T value) {
 		synchronized (lock) {
-			if (isSet()) {
+			if ((boolean) SET.getOpaque(this)) {
 				return false;
 			}
-			VALUE.setVolatile(this, value);
-			SET.setVolatile(this, true);
+			VALUE.setOpaque(this, value);
+			SET.setOpaque(this, true);
 		}
 		return true;
 	}
