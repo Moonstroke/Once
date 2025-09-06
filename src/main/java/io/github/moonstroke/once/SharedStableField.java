@@ -48,7 +48,9 @@ public class SharedStableField<T> extends StableField<T> {
 
 	protected void doSet(T value) {
 		synchronized (lock) {
-			checkSet();
+			if (isSet()) {
+				throw new IllegalStateException(name + " is already set");
+			}
 			VALUE.setVolatile(this, value);
 			SET.setVolatile(this, true);
 		}

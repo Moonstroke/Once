@@ -14,7 +14,7 @@ import java.util.Objects;
 public class StableField<T> {
 
 	/* The name of the field. Used in error messages and toString representation */
-	private final String name;
+	protected final String name;
 	protected boolean set;
 	protected T value;
 	private final List<Requirement<? super T>> requirements;
@@ -76,12 +76,6 @@ public class StableField<T> {
 		return set;
 	}
 
-	protected void checkSet() {
-		if (isSet()) {
-			throw new IllegalStateException(name + " is already set");
-		}
-	}
-
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
@@ -94,7 +88,9 @@ public class StableField<T> {
 =	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		checkSet();
+		if (isSet()) {
+			throw new IllegalStateException(name + " is already set");
+		}
 		doSet(value);
 	}
 
