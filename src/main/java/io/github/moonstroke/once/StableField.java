@@ -15,8 +15,8 @@ public class StableField<T> {
 
 	/* The name of the field. Used in error messages and toString representation */
 	private final String name;
-	protected volatile boolean set;
-	protected volatile T value;
+	protected boolean set;
+	protected T value;
 	private final List<Requirement<? super T>> requirements;
 	private final boolean allowNull;
 

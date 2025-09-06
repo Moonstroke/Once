@@ -39,16 +39,16 @@ public class SharedStableField<T> extends StableField<T> {
 	}
 
 	protected void setValue(T value) {
-		this.value = value;
-		this.set = true;
+		VALUE.setVolatile(this, value);
+		SET.setVolatile(this, true);
 	}
 
 	protected T getValue() {
-		return value;
+		return (T) VALUE.getVolatile(this);
 	}
 
 	protected boolean isSet() {
-		return set;
+		return (boolean) SET.getVolatile(this);
 	}
 
 	protected void doSet(T value) {
