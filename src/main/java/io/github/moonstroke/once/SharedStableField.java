@@ -21,6 +21,19 @@ public class SharedStableField<T> extends StableField<T> {
 		super(name, requirements);
 	}
 
+	protected void setValue(T value) {
+		this.value = value;
+		this.set = true;
+	}
+
+	protected T getValue() {
+		return value;
+	}
+
+	protected boolean isSet() {
+		return set;
+	}
+
 	protected void doSet(T value) {
 		synchronized (lock) {
 			checkSet();
