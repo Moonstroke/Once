@@ -19,7 +19,7 @@ import io.github.moonstroke.once.StableField;
 public class SerializableTest {
 
 	@Test
-	void testSerializingNotSerializableObjFails() {
+	void testSerializingNotSerializableFieldUnsetFails() {
 		var nssf = new StableField<>("not serializable field");
 		try (var oos = new ObjectOutputStream(OutputStream.nullOutputStream())) {
 			assertThrows(NotSerializableException.class, () -> oos.writeObject(nssf));
@@ -29,9 +29,32 @@ public class SerializableTest {
 	}
 
 	@Test
-	void testSerializingSerializableObjSucceeds() {
+	void testSerializingNotSerializableFieldSetFails() {
+		var nssf = new StableField<>("not serializable field");
+		nssf.set(new Object());
+		try (var oos = new ObjectOutputStream(OutputStream.nullOutputStream())) {
+			assertThrows(NotSerializableException.class, () -> oos.writeObject(nssf));
+		} catch (IOException e) {
+			fail(e);
+		}
+	}
+
+	@Test
+	void testSerializingSerializableFieldUnsetSucceeds() {
 		/* Just any standard serializable class will do */
 		var ssf = new SerializableStableField<String>("serializable field");
+		try (var oos = new ObjectOutputStream(OutputStream.nullOutputStream())) {
+			assertDoesNotThrow(() -> oos.writeObject(ssf));
+		} catch (IOException e) {
+			fail(e);
+		}
+	}
+
+	@Test
+	void testSerializingSerializableFieldSetSucceeds() {
+		/* Just any standard serializable class will do */
+		var ssf = new SerializableStableField<String>("serializable field");
+		ssf.set("serializable value");
 		try (var oos = new ObjectOutputStream(OutputStream.nullOutputStream())) {
 			assertDoesNotThrow(() -> oos.writeObject(ssf));
 		} catch (IOException e) {
