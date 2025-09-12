@@ -1,11 +1,15 @@
 package io.github.moonstroke.once.test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -60,6 +64,27 @@ public class SerializableTest {
 		} catch (IOException e) {
 			fail(e);
 		}
+	}
+
+	@Test
+	void testDeserializedSerializableFieldEqualsOriginalField() {
+		/* Just any standard serializable class will do */
+		var ssf = new SerializableStableField<String>("serializable field");
+		ssf.set("serializable value");
+		Object read = null;
+		var outputBuffer = new ByteArrayOutputStream();
+		try (var oos = new ObjectOutputStream(outputBuffer)) {
+			assertDoesNotThrow(() -> oos.writeObject(ssf));
+		} catch (IOException e) {
+			fail(e);
+		}
+		var inputBuffer = new ByteArrayInputStream(outputBuffer.toByteArray());
+		try (var ois = new ObjectInputStream(inputBuffer)) {
+			read = assertDoesNotThrow(ois::readObject);
+		} catch (IOException e) {
+			fail(e);
+		}
+		assertEquals(ssf, read);
 	}
 
 
