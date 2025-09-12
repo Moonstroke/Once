@@ -40,7 +40,7 @@ public class StableField<T> {
 			throw new IllegalArgumentException("Cannot have an empty name");
 		}
 		this.name = name;
-		List<Requirement<? super T>> reqs = Arrays.asList(requirements);
+		var reqs = Arrays.asList(requirements);
 		if (reqs.contains(null)) {
 			throw new NullPointerException(name + "cannot have a null requirement");
 		}
@@ -63,7 +63,7 @@ public class StableField<T> {
 		} else if (value == this) {
 			throw new IllegalArgumentException(name + "cannot be set to itself");
 		} else {
-			for (Requirement<? super T> r : requirements) {
+			for (var r : requirements) {
 				r.check(value);
 			}
 		}
@@ -178,8 +178,8 @@ public class StableField<T> {
 		if (!(o instanceof StableField)) {
 			return false;
 		}
-		StableField<?> other = (StableField<?>) o;
-		return name.equals(other.name) && Objects.equals(value, ((StableField<?>) o).value);
+		var other = (StableField<?>) o;
+		return name.equals(other.name) && Objects.equals(value, other.value);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		var sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append(' ');
 		sb.append('"');
