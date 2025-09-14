@@ -29,24 +29,25 @@ Central. To use it, simply declare it as a dependency:
 
 ## Features
 
-The project provides the class `StableField`, a generic container for a value
-that can be initialized only once. It defines a setter, which throws a runtime
-exception the second (and later) time it is called, a getter, which throws an
-exception if the setter has not been called beforehand, as well as non-throwing
-counterparts for both methods.
+The project provides the class `StableField` and its concurrency-ready subclass
+`SharedStableField` (more on this class in the next section), generic container
+for a single value that can be initialized only once. They define a setter,
+which throws a runtime exception the second (and later) time it is called, a
+getter, which throws an exception if the setter has not been called beforehand,
+as well as non-throwing counterparts for both methods.
 
-The class also overrides the `Object` methods `hashCode`, `equals` and
+The classes also override the `Object` methods `hashCode`, `equals` and
 `toString`. `hashCode` returns a numeric value based on the field's name and the
 contained value, if initialized; `equals` returns true iff the object compared
-to is also an instance of `StableField`, its name is the same as the object
-compared against, and either both contained values are not initialized, or both
-values compare equal (according to their `equals` method).
+to is also an instance of `StableField` (or its subclass), its name is the same
+as the object compared against, and either both contained values are not
+initialized, or both values compare equal (according to their `equals` method).
 
 ### `Requirement`s
 
-The `StableField` constructor accepts a dynamic number of *requirements* that a
-value passed to any setter must satisfy in order to be successfully assigned.
-These are implementations of a new functional interface: `Requirement`, whose
+Each class' constructor accepts a dynamic number of *requirements* that a value
+passed to any setter must satisfy in order to be successfully assigned.
+These are implementations of a functional interface called `Requirement`, whose
 `check` method by contract accepts the candidate value and throws an
 `IlleglArgumentException` if the value does not meet the criterion that the
 instance represents.
