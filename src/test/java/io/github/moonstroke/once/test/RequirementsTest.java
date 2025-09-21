@@ -38,7 +38,7 @@ class RequirementsTest {
 	}
 
 	@Test
-	void testRequirtementsAllowNullSetToNullNotEqualToOtherUnset() {
+	void testRequirementsAllowNullSetToNullNotEqualToOtherUnset() {
 		var sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
 		sf.set(null);
 		var other = new StableField<>("optional field");
