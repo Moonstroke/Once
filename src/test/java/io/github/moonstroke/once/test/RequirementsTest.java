@@ -1,6 +1,7 @@
 package io.github.moonstroke.once.test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
@@ -34,6 +35,14 @@ class RequirementsTest {
 	void testRequirementsAllowNullDoesNotAllowSetZeroTimesBeforeGet() {
 		var sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
 		assertThrows(NoSuchElementException.class, sf::get);
+	}
+
+	@Test
+	void testRequirtementsAllowNullSetToNullNotEqualToOtherUnset() {
+		var sf = new StableField<>("optional field", Requirements.ALLOW_NULL);
+		sf.set(null);
+		var other = new StableField<>("optional field");
+		assertFalse(sf.equals(other));
 	}
 
 	@Test
