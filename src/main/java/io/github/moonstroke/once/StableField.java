@@ -179,7 +179,7 @@ public class StableField<T> {
 			return false;
 		}
 		var other = (StableField<?>) o;
-		return name.equals(other.name) && Objects.equals(value, other.value);
+		return name.equals(other.name) && set == other.set && Objects.equals(value, other.value);
 	}
 
 	/**
