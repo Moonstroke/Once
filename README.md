@@ -30,11 +30,11 @@ Central. To use it, simply declare it as a dependency:
 ## Features
 
 The project provides the class `StableField` and its concurrency-ready subclass
-`SharedStableField` (more on this class in the next section), generic container
-for a single value that can be initialized only once. They define a setter,
-which throws a runtime exception the second (and later) time it is called, a
-getter, which throws an exception if the setter has not been called beforehand,
-as well as non-throwing counterparts for both methods.
+`SharedStableField` (more on this in the dedicated section below), generic
+container for a single value that can be initialized only once. They define a
+setter, which throws a runtime exception the second (and later) time it is
+called, a getter, which throws an exception if the setter has not been called
+beforehand, as well as non-throwing counterparts for both methods.
 
 The classes also override the `Object` methods `hashCode`, `equals` and
 `toString`. `hashCode` returns a numeric value based on the field's name and the
@@ -73,9 +73,21 @@ project's business logic.
 
 ### Thread-safety
 
-The class is fully thread-safe: initialization of the value by one thread will
-be immediately visible to others (no race condition). Thus instances can be
-shared among threads without the need for external synchronization.
+The base class, `StableField`, is not safe for concurrent use. Its derived class
+`SharedStableField`, on the other hand, is fully thread-safe: initialization of
+the value by one thread will be immediately visible to others (no race
+condition). Thus instances can be shared among threads without the need for
+external synchronization. This distinction in behavior allows to avoid the
+synchronization overhead when it is not required, or to enable explicitly
+concurrency-safe behavior, when it is actually intended.
+
+The API (i.e. public methods) for both classes is the same, which means that a
+thread-unsafe instance can be made thread-safe (or vice-versa) simply by
+changing the class with which it is initialized; this design of enabling
+behavior though polymorphism was deemed preferable to a method-based one (that
+is, provide a single class which defines two sets of methods: one thread-safe
+and the other not, of which respectively `get` and `getShared` for instance)
+because it limits the selection of a behavior to a single location.
 
 ### Full test coverage
 
