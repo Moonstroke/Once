@@ -78,8 +78,8 @@ shared among threads without the need for external synchronization.
 
 ### Full test coverage
 
-The class is fully[^1] covered using JUnit 5 tests, which strive to check common use
-cases as well as more obscure corner cases.
+The class is fully[^1] covered using JUnit 5 tests, which strive to check common
+use cases as well as more obscure corner cases.
 
 
 [^1]: Almost.  The coverage for `StableField` setter methods using the
