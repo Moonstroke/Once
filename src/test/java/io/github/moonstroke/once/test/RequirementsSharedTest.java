@@ -10,17 +10,17 @@ class RequirementsSharedTest extends RequirementsTest {
 
 	@Override
 	protected <T> StableField<T> getTestInstance(String name) {
-		return new SharedStableField<T>(name);
+		return new SharedStableField<>(name);
 	}
 
 	@Override
 	protected <T> StableField<T> getTestInstance(String name, Requirement<? super T> requirement) {
-		return new SharedStableField<T>(name, requirement);
+		return new SharedStableField<>(name, requirement);
 	}
 
 	@Override
 	protected <T> StableField<T> getTestInstance(String name, Requirement<? super T> requirement1,
 	                                             Requirement<? super T> requirement2) {
-		return new SharedStableField<T>(name, requirement1, requirement2);
+		return new SharedStableField<>(name, requirement1, requirement2);
 	}
 }
