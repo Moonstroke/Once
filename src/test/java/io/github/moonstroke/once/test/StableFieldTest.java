@@ -247,7 +247,8 @@ class StableFieldTest {
 	@Test
 	void testMapFunctionNotInvokedIfNotSet() {
 		StableField<Object> sf = getTestInstance();
-		assertThrows(NoSuchElementException.class, () -> sf.map(object -> fail("function should not have been called")));
+		assertThrows(NoSuchElementException.class,
+		             () -> sf.map(object -> fail("function should not have been called")));
 	}
 
 	@Test

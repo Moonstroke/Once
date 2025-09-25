@@ -30,7 +30,7 @@ public class SharedStableField<T> extends StableField<T> {
 
 	/**
 	 * Create a field of given name that can only be set once, fit for concurrent access.
-	 * 
+	 *
 	 * {@inheritDoc}
 	 */
 	@SafeVarargs

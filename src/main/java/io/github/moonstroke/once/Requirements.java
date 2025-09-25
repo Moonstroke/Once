@@ -21,8 +21,8 @@ public class Requirements {
 
 
 	/**
-	 * A special requirement instance that alters the default behavior of class {@link StableField} by allowing
-	 * setting the field to {@code null}.
+	 * A special requirement instance that alters the default behavior of class {@link StableField} by allowing setting
+	 * the field to {@code null}.
 	 *
 	 * When a {@code null} value is passed to a setter of a {@link StableField} instance which has been given this
 	 * requirement, all other requirements (if any) are skipped. This means that requirements are never called with a
@@ -97,9 +97,8 @@ public class Requirements {
 	/**
 	 * Require that a map be not empty.
 	 */
-	public static final Requirement<Map<?,
-	                                    ?>> MAP_NOT_EMPTY = Requirement.fromPredicate(map -> !map.isEmpty(),
-	                                                                                  "value cannot be an empty map");
+	public static final Requirement<Map<?, ?>> MAP_NOT_EMPTY = Requirement.fromPredicate(map -> !map.isEmpty(),
+	                                                                                     "value cannot be an empty map");
 
 	/**
 	 * Require that a character be nonzero.
