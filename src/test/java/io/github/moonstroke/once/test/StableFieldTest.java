@@ -21,27 +21,27 @@ import io.github.moonstroke.once.StableField;
 class StableFieldTest {
 
 	@Test
-	void testConstructorCallNullNameFails() {
+	void testConstructorNullNameFails() {
 		assertThrows(NullPointerException.class, () -> new StableField<>(null));
 	}
 
 	@Test
-	void testConstructorCallEmptyNameFails() {
+	void testConstructorEmptyNameFails() {
 		assertThrows(IllegalArgumentException.class, () -> new StableField<>(""));
 	}
 
 	@Test
-	void testConstructorCallNullRequirementsFails() {
+	void testConstructorNullRequirementsFails() {
 		assertThrows(NullPointerException.class, () -> new StableField<>("field", (Requirement<Object>[]) null));
 	}
 
 	@Test
-	void testConstructorCallNullRequirementAloneFails() {
+	void testConstructorNullRequirementAloneFails() {
 		assertThrows(NullPointerException.class, () -> new StableField<>("field", (Requirement<Object>) null));
 	}
 
 	@Test
-	void testConstructorCallNullRequirementAmongOthersFails() {
+	void testConstructorNullRequirementAmongOthersFails() {
 		assertThrows(NullPointerException.class,
 		             () -> new StableField<>("field", Requirements.POSITIVE, null, Requirements.ALLOW_NULL));
 	}
@@ -56,7 +56,7 @@ class StableFieldTest {
 	@Test
 	void testSecondCallToSetFails() {
 		var sf = new StableField<>("field");
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		assertThrows(IllegalStateException.class, () -> sf.set(value));
 	}
@@ -181,6 +181,27 @@ class StableFieldTest {
 	}
 
 	@Test
+	void testGetOptReturnsEmptyOptionalIfNotSet() {
+		StableField<Object> sf = new StableField<>("field");
+		assertTrue(sf.getOpt().isEmpty());
+	}
+
+	@Test
+	void testGetOptReturnsNotEmptyOptionalIfSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertFalse(sf.getOpt().isEmpty());
+	}
+
+	@Test
+	void testGetOptReturnsWrappedValuePassedToSet() {
+		StableField<Object> sf = new StableField<>("field");
+		Object value = new Object();
+		sf.set(value);
+		assertEquals(value, sf.getOpt().get());
+	}
+
+	@Test
 	void testGetDefaultAcceptsNull() {
 		var sf = new StableField<>("field");
 		assertDoesNotThrow(() -> sf.get(null));
@@ -189,7 +210,8 @@ class StableFieldTest {
 	@Test
 	void testGetDefaultReturnsStoredValueIfSet() {
 		var sf = new StableField<>("field");
-		Object value = new Object(), defaultValue = new Object();
+		var value = new Object();
+		var defaultValue = new Object();
 		sf.set(value);
 		assertEquals(value, sf.get(defaultValue));
 	}
@@ -197,8 +219,84 @@ class StableFieldTest {
 	@Test
 	void testGetDefaultReturnsDefaultValueIfNotSet() {
 		var sf = new StableField<>("field");
-		Object defaultValue = new Object();
+		var defaultValue = new Object();
 		assertEquals(defaultValue, sf.get(defaultValue));
+	}
+
+	@Test
+	void testMapNullFunctionFails() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertThrows(NullPointerException.class, () -> sf.map(null));
+	}
+
+	@Test
+	void testMapFailsIfNotSet() {
+		StableField<Object> sf = new StableField<>("field");
+		assertThrows(NoSuchElementException.class, () -> sf.map(String::valueOf));
+	}
+
+	@Test
+	void testMapFunctionNotInvokedIfNotSet() {
+		StableField<Object> sf = new StableField<>("field");
+		assertThrows(NoSuchElementException.class, () -> sf.map(object -> fail("function should not have been called")));
+	}
+
+	@Test
+	void testMapFunctionInvokedIfSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		boolean[] called = new boolean[1];
+		assertDoesNotThrow(() -> sf.map(object -> {
+			called[0] = true;
+			return String.valueOf(object);
+		}));
+		assertTrue(called[0]);
+	}
+
+	@Test
+	void testMapFunctionReturnsNullSucceeds() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertDoesNotThrow(() -> sf.map(object -> null));
+	}
+
+	@Test
+	void testMapParamReturnsNullReturnsEmptyOptional() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertTrue(sf.map(object -> null).isEmpty());
+	}
+
+	@Test
+	void testMapFunctionReturnsNotNullReturnsNotEmptyOptional() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertFalse(sf.map(String::valueOf).isEmpty());
+	}
+
+	@Test
+	void testIfSetNullConsumerFails() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		assertThrows(NullPointerException.class, () -> sf.ifSet(null));
+	}
+
+	@Test
+	void testIfSetConsumerNotInvokedIfNotSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.ifSet(object -> fail("consumer should not have been called"));
+	}
+
+	@Test
+	void testIfSetConsumerInvokedIfSet() {
+		StableField<Object> sf = new StableField<>("field");
+		sf.set(new Object());
+		var called = new boolean[1];
+		sf.ifSet(object -> {
+			called[0] = true;
+		});
+		assertTrue(called[0]);
 	}
 
 	@Test
@@ -265,7 +363,7 @@ class StableFieldTest {
 	@Test
 	void testEqualsInstSetSameValueSameNameReturnsTrue() {
 		var sf = new StableField<>("field");
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		var other = new StableField<>("field");
 		other.set(value);
@@ -275,7 +373,7 @@ class StableFieldTest {
 	@Test
 	void testEqualsInstSetSameValueDifferetnNameReturnsFalse() {
 		var sf = new StableField<>("field");
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		var other = new StableField<>("other");
 		other.set(value);
@@ -309,7 +407,7 @@ class StableFieldTest {
 	@Test
 	void testHashCodeReturnsNonZeroIfSet() {
 		var sf = new StableField<>("field");
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		assertNotEquals(0, sf.hashCode());
 	}

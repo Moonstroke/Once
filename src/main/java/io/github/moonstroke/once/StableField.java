@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A special container for a single value, allowing only a single initialization.
@@ -134,6 +137,15 @@ public class StableField<T> {
 	}
 
 	/**
+	 * Retrieve an optional instance wrapping the object's value if present, or an empty optional otherwise.
+	 *
+	 * @return an {@link Optional} wrapping the value, or an empty one; never {@code null}
+	 */
+	public Optional<T> getOpt() {
+		return Optional.ofNullable(value);
+	}
+
+	/**
 	 * Retrieve the instance's value, or return the provided default if unset.
 	 *
 	 * @param defaultValue The default value, {@code null} accepted
@@ -142,6 +154,51 @@ public class StableField<T> {
 	 */
 	public T get(T defaultValue) {
 		return set ? value : defaultValue;
+	}
+
+	/**
+	 * Retrieve the value and transform it using to the given function.
+	 *
+	 * @param <R>         The output type of the transformation function
+	 * @param mapFunction The transformation function
+	 *
+	 * @return an {@link Optional} containing the transformed value, or an empty one if the function returned
+	 *         {@code null}
+	 *
+	 * @throws NoSuchElementException if the value was not initialized
+	 * @throws NullPointerException   if mapFunction is {@code null}
+	 *
+	 * @apiNote It is deliberate that the function throw an error if the field is unset. It was deemed better than the
+	 *          alternatives of passing {@code null} to the function (thereby allowing to simplify the latter by
+	 *          removing the need for a {@code null}-check) or returning an empty optional without calling the function
+	 *          (which would have made an empty optional return ambiguous). If a non-throwing alternative is required,
+	 *          users may instead call the method {@link #getOpt} followed by {@link Optional#map} with the same
+	 *          function as its parameter.
+	 */
+	public <R> Optional<R> map(Function<T, R> mapFunction) {
+		if (mapFunction == null) {
+			throw new NullPointerException(name + " cannot be passed to a null function");
+		}
+		if (!set) {
+			throw new NoSuchElementException(name + " has not been set");
+		}
+		return Optional.ofNullable(mapFunction.apply(value));
+	}
+
+	/**
+	 * Call the provided function with the value if it is set.
+	 *
+	 * @param consumer The function to call if the value is set
+	 *
+	 * @throws NullPointerException if consumer is {@code null}
+	 */
+	public void ifSet(Consumer<T> consumer) {
+		if (consumer == null) {
+			throw new NullPointerException(name + " cannot be passed to a null consumer");
+		}
+		if (set) {
+			consumer.accept(value);
+		}
 	}
 
 	/**

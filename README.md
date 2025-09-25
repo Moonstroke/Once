@@ -35,6 +35,12 @@ exception the second (and later) time it is called, a getter, which throws an
 exception if the setter has not been called beforehand, as well as non-throwing
 counterparts for both methods.
 
+Provided as well is a set of *functional* methods, which allow to interact with
+more functional-programming-oriented features of Java: `Optional` and functional
+interfaces like `Supplier`, `Function` and `Consumer`. These methods generally
+do not throw (unless, for those who accept a functional object,  a `null` is
+passed).
+
 The class also overrides the `Object` methods `hashCode`, `equals` and
 `toString`. `hashCode` returns a numeric value based on the field's name and the
 contained value, if initialized; `equals` returns true iff the object compared
