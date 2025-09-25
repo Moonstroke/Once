@@ -58,14 +58,14 @@ class StableFieldTest {
 	@Test
 	void testFirstCallToSetDoesNotFail() {
 		var sf = getTestInstance();
-		Object value = new Object();
+		var value = new Object();
 		assertDoesNotThrow(() -> sf.set(value));
 	}
 
 	@Test
 	void testSecondCallToSetFails() {
 		var sf = getTestInstance();
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		assertThrows(IllegalStateException.class, () -> sf.set(value));
 	}
@@ -85,10 +85,10 @@ class StableFieldTest {
 	@Test
 	void testSetCalledInParallelSucceedsOnce() {
 		var sf = getTestInstance();
-		int[] successesCountPtr = new int[] {0};
+		var successesCountPtr = new int[] {0};
 		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
 		 * (assuming the compiler does not merge them) */
-		Thread thread1 = new Thread(() -> {
+		var thread1 = new Thread(() -> {
 			try {
 				sf.set(new Object());
 				successesCountPtr[0]++;
@@ -96,7 +96,7 @@ class StableFieldTest {
 				/* Ignore */
 			}
 		});
-		Thread thread2 = new Thread(() -> {
+		var thread2 = new Thread(() -> {
 			try {
 				sf.set(new Object());
 				successesCountPtr[0]++;
@@ -136,15 +136,15 @@ class StableFieldTest {
 	@Test
 	void testTrySetCalledInParallelSucceedsOnce() {
 		var sf = getTestInstance();
-		int[] successesCountPtr = new int[] {0};
+		var successesCountPtr = new int[] {0};
 		/* The lambda is not factored out in a variable so that the two occurrences are two separate runnable instances
 		 * (assuming the compiler does not merge them) */
-		Thread thread1 = new Thread(() -> {
+		var thread1 = new Thread(() -> {
 			if (sf.trySet(new Object())) {
 				successesCountPtr[0]++;
 			}
 		});
-		Thread thread2 = new Thread(() -> {
+		var thread2 = new Thread(() -> {
 			if (sf.trySet(new Object())) {
 				successesCountPtr[0]++;
 			}
@@ -176,7 +176,7 @@ class StableFieldTest {
 	@Test
 	void testCallToGetAfterSetDoesNotFail() {
 		var sf = getTestInstance();
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		assertDoesNotThrow(() -> sf.get());
 	}
@@ -184,28 +184,28 @@ class StableFieldTest {
 	@Test
 	void testGetReturnsValuePassedToSet() {
 		var sf = getTestInstance();
-		Object value = new Object();
+		var value = new Object();
 		sf.set(value);
 		assertEquals(value, sf.get());
 	}
 
 	@Test
 	void testGetOptReturnsEmptyOptionalIfNotSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		assertTrue(sf.getOpt().isEmpty());
 	}
 
 	@Test
 	void testGetOptReturnsNotEmptyOptionalIfSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertFalse(sf.getOpt().isEmpty());
 	}
 
 	@Test
 	void testGetOptReturnsWrappedValuePassedToSet() {
-		StableField<Object> sf = getTestInstance();
-		Object value = new Object();
+		var sf = getTestInstance();
+		var value = new Object();
 		sf.set(value);
 		assertEquals(value, sf.getOpt().get());
 	}
@@ -219,7 +219,8 @@ class StableFieldTest {
 	@Test
 	void testGetDefaultReturnsStoredValueIfSet() {
 		var sf = getTestInstance();
-		Object value = new Object(), defaultValue = new Object();
+		var value = new Object();
+		var defaultValue = new Object();
 		sf.set(value);
 		assertEquals(value, sf.get(defaultValue));
 	}
@@ -227,35 +228,35 @@ class StableFieldTest {
 	@Test
 	void testGetDefaultReturnsDefaultValueIfNotSet() {
 		var sf = getTestInstance();
-		Object defaultValue = new Object();
+		var defaultValue = new Object();
 		assertEquals(defaultValue, sf.get(defaultValue));
 	}
 
 	@Test
 	void testMapNullFunctionFails() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertThrows(NullPointerException.class, () -> sf.map(null));
 	}
 
 	@Test
 	void testMapFailsIfNotSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		assertThrows(NoSuchElementException.class, () -> sf.map(String::valueOf));
 	}
 
 	@Test
 	void testMapFunctionNotInvokedIfNotSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		assertThrows(NoSuchElementException.class,
 		             () -> sf.map(object -> fail("function should not have been called")));
 	}
 
 	@Test
 	void testMapFunctionInvokedIfSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
-		boolean[] called = new boolean[1];
+		var called = new boolean[1];
 		assertDoesNotThrow(() -> sf.map(object -> {
 			called[0] = true;
 			return String.valueOf(object);
@@ -265,43 +266,43 @@ class StableFieldTest {
 
 	@Test
 	void testMapFunctionReturnsNullSucceeds() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertDoesNotThrow(() -> sf.map(object -> null));
 	}
 
 	@Test
 	void testMapParamReturnsNullReturnsEmptyOptional() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertTrue(sf.map(object -> null).isEmpty());
 	}
 
 	@Test
 	void testMapFunctionReturnsNotNullReturnsNotEmptyOptional() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertFalse(sf.map(String::valueOf).isEmpty());
 	}
 
 	@Test
 	void testIfSetNullConsumerFails() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
 		assertThrows(NullPointerException.class, () -> sf.ifSet(null));
 	}
 
 	@Test
 	void testIfSetConsumerNotInvokedIfNotSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.ifSet(object -> fail("consumer should not have been called"));
 	}
 
 	@Test
 	void testIfSetConsumerInvokedIfSet() {
-		StableField<Object> sf = getTestInstance();
+		var sf = getTestInstance();
 		sf.set(new Object());
-		boolean[] called = new boolean[1];
+		var called = new boolean[1];
 		sf.ifSet(object -> {
 			called[0] = true;
 		});

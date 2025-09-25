@@ -7,10 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
@@ -132,7 +129,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsListNotEmptyRejectsEmptyList() {
 		var sf = getTestInstance(Requirements.LIST_NOT_EMPTY);
-		List<Object> emptyList = Collections.emptyList();
+		var emptyList = Collections.emptyList();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyList));
 	}
 
@@ -145,7 +142,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsSetNotEmptyRejectsEmptySet() {
 		var sf = getTestInstance(Requirements.SET_NOT_EMPTY);
-		Set<Object> emptySet = Collections.emptySet();
+		var emptySet = Collections.emptySet();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(emptySet));
 	}
 
@@ -158,7 +155,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptyList() {
 		var sf = getTestInstance(Requirements.COLLECTION_NOT_EMPTY);
-		List<Object> emptyCollection = Collections.emptyList();
+		var emptyCollection = Collections.emptyList();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyCollection));
 	}
 
@@ -171,7 +168,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsCollectionNotEmptyRejectsEmptySet() {
 		var sf = getTestInstance(Requirements.COLLECTION_NOT_EMPTY);
-		Set<Object> emptyCollection = Collections.emptySet();
+		var emptyCollection = Collections.emptySet();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyCollection));
 	}
 
@@ -184,7 +181,7 @@ class RequirementsTest {
 	@Test
 	void testRequirementsMapNotEmptyRejectsEmptyMap() {
 		var sf = getTestInstance(Requirements.MAP_NOT_EMPTY);
-		Map<Object, Object> emptyMap = Collections.emptyMap();
+		var emptyMap = Collections.emptyMap();
 		assertThrows(IllegalArgumentException.class, () -> sf.set(emptyMap));
 	}
 
