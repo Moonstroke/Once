@@ -147,7 +147,7 @@ public class StableField<T> {
 	 * @return an {@link Optional} wrapping the value, or an empty one; never {@code null}
 	 */
 	public Optional<T> getOpt() {
-		return Optional.ofNullable(value);
+		return Optional.ofNullable(getValue());
 	}
 
 	/**
