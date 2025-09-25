@@ -69,7 +69,7 @@ public class Requirements {
 	 */
 	public static Requirement<CharSequence> matches(String regex) {
 		Objects.requireNonNull(regex);
-		Pattern pattern = Pattern.compile(regex);
+		var pattern = Pattern.compile(regex);
 		return Requirement.fromPredicate(s -> pattern.matcher(s).matches(), "value must match the pattern " + regex);
 	}
 

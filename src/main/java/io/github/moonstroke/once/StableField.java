@@ -25,7 +25,7 @@ public class StableField<T> {
 	/**
 	 * Create a field of given name that can only be set once.
 	 *
-	 * @param name The name of the field
+	 * @param name         The name of the field
 	 * @param requirements The requirements that the value must meet before being set
 	 *
 	 * @throws NullPointerException     if any parameter is {@code null}
@@ -40,7 +40,7 @@ public class StableField<T> {
 			throw new IllegalArgumentException("Cannot have an empty name");
 		}
 		this.name = name;
-		List<Requirement<? super T>> reqs = Arrays.asList(requirements);
+		var reqs = Arrays.asList(requirements);
 		if (reqs.contains(null)) {
 			throw new NullPointerException(name + "cannot have a null requirement");
 		}
@@ -63,7 +63,7 @@ public class StableField<T> {
 		} else if (value == this) {
 			throw new IllegalArgumentException(name + "cannot be set to itself");
 		} else {
-			for (Requirement<? super T> r : requirements) {
+			for (var r : requirements) {
 				r.check(value);
 			}
 		}
@@ -76,9 +76,9 @@ public class StableField<T> {
 	 *
 	 * @throws IllegalStateException    if the value has already been initialized
 	 * @throws IllegalArgumentException if value is {@code this}
-=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
 	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
-=	 */
+	 */
 	public void set(T value) {
 		checkValueToSet(value);
 		if (set) {
@@ -101,9 +101,9 @@ public class StableField<T> {
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
 	 *
 	 * @throws IllegalArgumentException if value is {@code this}
-=	 * @throws NullPointerException     if value is {@code null} and this instance does not
+	 * @throws NullPointerException     if value is {@code null} and this instance does not
 	 *                                  {@linkplain Requirements#ALLOW_NULL allow nulls}
-=	 */
+	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
 		if (set) {
@@ -178,8 +178,8 @@ public class StableField<T> {
 		if (!(o instanceof StableField)) {
 			return false;
 		}
-		StableField<?> other = (StableField<?>) o;
-		return name.equals(other.name) && Objects.equals(value, ((StableField<?>) o).value);
+		var other = (StableField<?>) o;
+		return name.equals(other.name) && set == other.set && Objects.equals(value, other.value);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		var sb = new StringBuilder();
 		sb.append(getClass().getName());
 		sb.append(' ');
 		sb.append('"');
