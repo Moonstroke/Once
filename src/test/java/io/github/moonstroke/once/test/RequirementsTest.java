@@ -119,7 +119,7 @@ class RequirementsTest {
 
 	@Test
 	void testRequirementsMatchesStringAcceptsMatchingString() {
-		var sf = getTestInstance(Requirements.matches(Pattern.compile("a+b")));
+		var sf = getTestInstance(Requirements.matches("a+b"));
 		assertDoesNotThrow(() -> sf.set("aab"));
 	}
 
