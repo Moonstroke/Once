@@ -17,10 +17,9 @@ import java.util.function.Function;
 public class StableField<T> {
 
 	/* The name of the field. Used in error messages and toString representation */
-	private final String name;
-	private volatile boolean set;
-	private volatile T value;
-	private final Object lock = new Object();
+	protected final String name;
+	protected boolean set;
+	protected T value;
 	private final List<Requirement<? super T>> requirements;
 	private final boolean allowNull;
 
@@ -72,6 +71,14 @@ public class StableField<T> {
 		}
 	}
 
+	protected T getValue() {
+		return value;
+	}
+
+	protected boolean isSet() {
+		return set;
+	}
+
 	/**
 	 * Initialize the instance's value, or fail if has already been set.
 	 *
@@ -84,16 +91,15 @@ public class StableField<T> {
 	 */
 	public void set(T value) {
 		checkValueToSet(value);
-		if (set) {
+		if (isSet()) {
 			throw new IllegalStateException(name + " is already set");
 		}
-		synchronized (lock) {
-			if (set) {
-				throw new IllegalStateException(name + " is already set");
-			}
-			this.value = value;
-			set = true;
-		}
+		doSet(value);
+	}
+
+	protected void doSet(T value) {
+		this.value = value;
+		this.set = true;
 	}
 
 	/**
@@ -109,16 +115,15 @@ public class StableField<T> {
 	 */
 	public boolean trySet(T value) {
 		checkValueToSet(value);
-		if (set) {
+		if (isSet()) {
 			return false;
 		}
-		synchronized (lock) {
-			if (set) {
-				return false;
-			}
-			this.value = value;
-			set = true;
-		}
+		return doTrySet(value);
+	}
+
+	protected boolean doTrySet(T value) {
+		this.value = value;
+		this.set = true;
 		return true;
 	}
 
@@ -130,10 +135,10 @@ public class StableField<T> {
 	 * @throws NoSuchElementException if the value was not initialized
 	 */
 	public T get() {
-		if (!set) {
+		if (!isSet()) {
 			throw new NoSuchElementException(name + " has not been set");
 		}
-		return value;
+		return getValue();
 	}
 
 	/**
@@ -153,7 +158,7 @@ public class StableField<T> {
 	 * @return the value set, or the default one if unset
 	 */
 	public T get(T defaultValue) {
-		return set ? value : defaultValue;
+		return isSet() ? getValue() : defaultValue;
 	}
 
 	/**
@@ -179,10 +184,10 @@ public class StableField<T> {
 		if (mapFunction == null) {
 			throw new NullPointerException(name + " cannot be passed to a null function");
 		}
-		if (!set) {
+		if (!isSet()) {
 			throw new NoSuchElementException(name + " has not been set");
 		}
-		return Optional.ofNullable(mapFunction.apply(value));
+		return Optional.ofNullable(mapFunction.apply(getValue()));
 	}
 
 	/**
@@ -196,8 +201,8 @@ public class StableField<T> {
 		if (consumer == null) {
 			throw new NullPointerException(name + " cannot be passed to a null consumer");
 		}
-		if (set) {
-			consumer.accept(value);
+		if (isSet()) {
+			consumer.accept(getValue());
 		}
 	}
 
@@ -208,7 +213,7 @@ public class StableField<T> {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, value);
+		return Objects.hash(name, getValue());
 	}
 
 	/**
@@ -236,7 +241,7 @@ public class StableField<T> {
 			return false;
 		}
 		var other = (StableField<?>) o;
-		return name.equals(other.name) && set == other.set && Objects.equals(value, other.value);
+		return name.equals(other.name) && isSet() == other.isSet() && Objects.equals(getValue(), other.getValue());
 	}
 
 	/**
@@ -254,10 +259,10 @@ public class StableField<T> {
 		sb.append('"');
 		sb.append(' ');
 		sb.append('(');
-		if (!set) {
+		if (!isSet()) {
 			sb.append("not set");
 		} else {
-			sb.append(value.toString());
+			sb.append(getValue().toString());
 		}
 		sb.append(')');
 		return sb.toString();
