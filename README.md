@@ -23,7 +23,7 @@ Central. To use it, simply declare it as a dependency:
     	<dependency>
     		<groupId>io.github.moonstroke</groupId>
     		<artifactId>once</artifactId>
-    		<version>0.1</version>
+    		<version>0.3</version>
     	<dependency>
     </dependencies>
 
