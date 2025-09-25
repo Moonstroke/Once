@@ -21,26 +21,31 @@ class SharedStableFieldTest extends StableFieldTest {
 
 
 	@Test
+	@Override
 	void testConstructorNullNameFails() {
 		assertThrows(NullPointerException.class, () -> new SharedStableField<>(null));
 	}
 
 	@Test
+	@Override
 	void testConstructorEmptyNameFails() {
 		assertThrows(IllegalArgumentException.class, () -> new SharedStableField<>(""));
 	}
 
 	@Test
+	@Override
 	void testConstructorNullRequirementsFails() {
 		assertThrows(NullPointerException.class, () -> new SharedStableField<>("field", (Requirement<Object>[]) null));
 	}
 
 	@Test
+	@Override
 	void testConstructorNullRequirementAloneFails() {
 		assertThrows(NullPointerException.class, () -> new SharedStableField<>("field", (Requirement<Object>) null));
 	}
 
 	@Test
+	@Override
 	void testConstructorNullRequirementAmongOthersFails() {
 		assertThrows(NullPointerException.class,
 		             () -> new SharedStableField<>("field", Requirements.POSITIVE, null, Requirements.ALLOW_NULL));
