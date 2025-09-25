@@ -3,6 +3,38 @@
 
 # Changelog
 
+## (2025/09/25) version 0.3
+
+### New (sub)class: `SharedStableField`
+
+This new class is a child of the original `StableField` one. It inherits the
+thread-safety characteristic of its parent, which itself is reverted to a basic,
+not-thread-safe implementation. This allows users to opt into thread safety at
+their discretion, and the choice is explicit (using the new class' name); and if
+concurrency is not required, no runtime overhead is imposed.
+
+### New feature: functional API
+
+Methods are added to `StableField` (and inherited in the new subclass),
+providing a functional-like interface:
+- `Optional<T> getOpt()`
+- `Optional<R> <R> map(Function<T, R>)`
+- `void ifSet(Consumer<T>)`
+
+### Minor changes
+
+The member `set` is now taken into account when comparing two `StableField`
+objects. This fixes a corner case where an instance explicitly set to `null`
+(because it has the `ALLOW_NULL` requirement set) compares equals to an unset
+field instance.
+
+A test method for `Requirements.matches(String)` is fixed: it (inadvertently)
+used the overload accepting a `Pattern`.
+
+The code now makes systematic use of [LVTI](https://openjdk.org/jeps/286). This
+is most notable in tests, which almost all have at least one local variable (the
+instance under test).
+
 ## (2025/09/01) version 0.2
 
 ### New feature: requirements
