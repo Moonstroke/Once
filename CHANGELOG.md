@@ -3,7 +3,7 @@
 
 # Changelog
 
-## (2025/09/25) version 0.3
+## (2025/09/27) version 0.3
 
 ### New (sub)class: `SharedStableField`
 
