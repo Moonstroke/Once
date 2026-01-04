@@ -73,6 +73,7 @@ public class IntStableField {
 	 *
 	 * @param value The value to set
 	 *
+	 * @throws IllegalArgumentException if the value fails to meet any requirement
 	 * @throws IllegalStateException    if the value has already been initialized
 	 */
 	public void set(int value) {
@@ -94,6 +95,8 @@ public class IntStableField {
 	 * @param value The value to set
 	 *
 	 * @return {@code true} if the value was actually set, {@code false} if it was already set
+	 *
+	 * @throws IllegalArgumentException if the value fails to meet any requirement
 	 */
 	public boolean trySet(int value) {
 		checkValueToSet(value);
