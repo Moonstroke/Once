@@ -1,0 +1,75 @@
+/* SPDX-FileCopyrightText: 2025 (c) Joachim MARIE <moonstroke+github@live.fr>
+ * SPDX-License-Identifier: MIT */
+package io.github.moonstroke.once;
+
+import java.util.Objects;
+import java.util.function.Predicate;
+
+/**
+ * An additional requirement that the field value must meet when it is being set.
+ *
+ * @param <T> The type of the value under scrutiny
+ */
+@FunctionalInterface
+public interface IntRequirement extends Requirement<Integer> {
+
+	/**
+	 * Perform the check that this requirement represents.
+	 *
+	 * @param value The value to check, never {@code null}
+	 *
+	 * @throws IllegalArgumentException if the value does not meet the requirement
+	 */
+	default void check(Integer value) {
+		check(value.intValue());
+	}
+
+	/**
+	 * Perform the check that this requirement represents.
+	 *
+	 * @param value The value to check
+	 *
+	 * @throws IllegalArgumentException if the value does not meet the requirement
+	 */
+	void check(int value) throws IllegalArgumentException;
+
+
+	/**
+	 * Wrap a boolean predicate into a requirement instance.
+	 *
+	 * @param <U>       The type of the value checked
+	 * @param predicate The boolean predicate to wrap
+	 *
+	 * @return A requirement instance performing the check represented by the given predicate
+	 *
+	 * @throws NullPointerException if predicate is {@code null}
+	 */
+	static IntRequirement fromPredicate(Predicate<Integer> predicate) {
+		return fromPredicate(predicate, "requirement not met");
+	}
+
+	/**
+	 * Wrap a boolean predicate into a requirement instance, specifying a custom error message.
+	 *
+	 * @param <U>       The type of the value checked
+	 * @param predicate The boolean predicate to wrap
+	 * @param message   The error message to throw if the requirement is not met
+	 *
+	 * @return A requirement instance performing the check represented by the given predicate
+	 *
+	 * @throws NullPointerException     if predicate or message is {@code null}
+	 * @throws IllegalArgumentException if message is empty
+	 */
+	static IntRequirement fromPredicate(Predicate<Integer> predicate, String message) {
+		Objects.requireNonNull(predicate);
+		Objects.requireNonNull(message);
+		if (message.isEmpty()) {
+			throw new IllegalArgumentException("cannot throw an empty message");
+		}
+		return value -> {
+			if (!predicate.test(value)) {
+				throw new IllegalArgumentException(message);
+			}
+		};
+	}
+}
